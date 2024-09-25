@@ -3,6 +3,15 @@
 
 Farm to Fork platform is a blockchain-based food supply chain management system designed to enhance transparency, traceability, and quality assurance in the food supply chain. It facilitates seamless interactions between manufacturers, distributors, and retailers, ensuring that food products are handled and transported under optimal conditions. The system focuses on providing comprehensive information about products, managing order processes, and monitoring the quality of products through temperature tracking. Each step of the supply chain is documented and accessible, ensuring food safety, reducing wastage, and offering a secure and efficient solution for stakeholders.
 
+### Technology Used
+
+#### Blockchain Technology (Ethereum): Ensures the immutability and security of transaction records across the supply chain. Each transaction, from manufacturer to retailer, is recorded on the blockchain, offering full traceability of products.
+
+#### Smart Contracts: Facilitates automated processes such as order acceptance, shipment status updates, and temperature validation. These contracts ensure that predefined conditions, like temperature limits, are met before proceeding with transactions.
+
+#### Web-based Interface: Built using modern web technologies, the platform allows manufacturers, distributors, and retailers to access the system from anywhere, ensuring a seamless user experience.
+
+#### Truffle and Ganache: Used for developing, testing, and deploying smart contracts on the blockchain.
 ### Setting up Local Development
 
 #### Step 1: Installation and Setup
