@@ -1,5 +1,5 @@
-##Farm To Fork
-# 2024-25_GP_25: Blockchain-Based Supply Chain System 
+## 2024-25_GP_25: Farm To Fork
+# Blockchain-Based Supply Chain System 
 
 ### Setting up Local Development
 
