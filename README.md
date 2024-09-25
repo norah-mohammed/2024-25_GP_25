@@ -1,5 +1,7 @@
 ## 2024-25_GP_25: Farm To Fork
-# Blockchain-Based Supply Chain System 
+### Blockchain-Based Supply Chain System 
+
+Farm to Fork platform is a blockchain-based food supply chain management system designed to enhance transparency, traceability, and quality assurance in the food supply chain. It facilitates seamless interactions between manufacturers, distributors, and retailers, ensuring that food products are handled and transported under optimal conditions. The system focuses on providing comprehensive information about products, managing order processes, and monitoring the quality of products through temperature tracking. Each step of the supply chain is documented and accessible, ensuring food safety, reducing wastage, and offering a secure and efficient solution for stakeholders.
 
 ### Setting up Local Development
 
