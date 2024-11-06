@@ -3,7 +3,7 @@
 ## Project Team
 - **Deem Alshaye** - [GitHub Profile](https://github.com/DeemAlshaye)
 - **Norah Alwohaibi** - [GitHub Profile](https://github.com/norah-mohammed)
-- **Razan Alkhalaqi** - [GitHub Profile](https://github.com/RazanAlkhaluqy)
+- **Razan Alkhaluqi** - [GitHub Profile](https://github.com/RazanAlkhaluqy)
 - **Lama Alnahabi** - [GitHub Profile](https://github.com/Lamaalnahabi)
 
 ## Supervised by
