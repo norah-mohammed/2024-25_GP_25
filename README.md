@@ -117,7 +117,7 @@ Farm to Fork platform is a blockchain-based food supply chain management system 
    - In Ganache, go to the "Accounts" tab, copy the private key of the first account.
    - In MetaMask, click on the three dots in the top-right corner, select "Import Account," and paste the private key.
 
----
+
 
 
 
