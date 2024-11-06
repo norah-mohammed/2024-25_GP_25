@@ -81,9 +81,9 @@ Farm to Fork platform is a blockchain-based food supply chain management system 
 
 #### Step 3: Run DApp
 
-1. **Navigate to the Client Folder**:
+1. **Navigate to the supply-chain-app Folder**:
     ```bash
-    cd client
+    cd supply-chain-app
     ```
 
 2. **Install All Dependencies**:
