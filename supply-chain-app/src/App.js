@@ -3,11 +3,17 @@ import getWeb3 from './web3';
 import RoleContract from './contracts/RoleContract.json';
 import ManufacturerHomePage from './ManufacturerHomePage';
 import RetailerHomePage from './RetailerHomePage';
+import DistributorHomePage from './DistributorHomePage'; // Distributor Home Page
+import DistributorOrdersPage from './DistributorOrdersPage'; // Distributor Orders Page
 import Manufacturer from './Manufacturer';
 import ViewManufacturers from './ViewManufacturers';
 import ManufacturerProducts from './ManufacturerProducts';
 import PlaceOrder from './PlaceOrder';
 import NonUserPage from './NonUserPage';
+import OrdersPage from './OrdersPage';
+import ManufacturerDistributorsPage from './ManufacturerDistributorsPage';
+
+
 
 const Header = ({ currentUser, setCurrentPage }) => {
   return (
@@ -17,12 +23,21 @@ const Header = ({ currentUser, setCurrentPage }) => {
           <>
             <button onClick={() => setCurrentPage('manufacturerHomePage')}>Home</button>
             <button onClick={() => setCurrentPage('manufacturer')}>Products</button>
+            <button onClick={() => setCurrentPage('ordersPage')}>Orders</button>
+            <button onClick={() => setCurrentPage('manufacturerDistributorsPage')}>Distributors</button>
+
           </>
         )}
         {currentUser === 'retailer' && (
           <>
             <button onClick={() => setCurrentPage('retailerHomePage')}>Home</button>
             <button onClick={() => setCurrentPage('viewManufacturers')}>View Manufacturers</button>
+          </>
+        )}
+        {currentUser === 'distributor' && (
+          <>
+            <button onClick={() => setCurrentPage('distributorHomePage')}>Home</button>
+            <button onClick={() => setCurrentPage('distributorOrdersPage')}>Orders</button>
           </>
         )}
       </nav>
@@ -88,6 +103,7 @@ const App = () => {
 
       const isManufacturer = await roleInstance.methods.checkManufacturer(accounts[0]).call();
       const isRetailer = await roleInstance.methods.checkRetailer(accounts[0]).call();
+      const isDistributor = await roleInstance.methods.checkDistributor(accounts[0]).call();
 
       if (isManufacturer) {
         setRole('manufacturer');
@@ -95,6 +111,9 @@ const App = () => {
       } else if (isRetailer) {
         setRole('retailer');
         setCurrentPage('retailerHomePage');
+      } else if (isDistributor) {
+        setRole('distributor');
+        setCurrentPage('distributorHomePage');
       } else {
         setRole('nonUser');
         setCurrentPage('nonUserPage');
@@ -126,12 +145,21 @@ const App = () => {
         return <ManufacturerHomePage />;
       case 'manufacturer':
         return <Manufacturer />;
+      case 'ordersPage':
+        return <OrdersPage />;
       case 'retailerHomePage':
         return <RetailerHomePage />;
       case 'viewManufacturers':
         return <ViewManufacturers onViewProducts={handleViewProducts} />;
+      case 'distributorHomePage': // Distributor home page case
+        return <DistributorHomePage />;
+      case 'distributorOrdersPage': // Distributor orders page case
+        return <DistributorOrdersPage />;
       case 'nonUserPage':
         return <NonUserPage />;
+        case 'manufacturerDistributorsPage':
+  return <ManufacturerDistributorsPage />;
+
       default:
         return <p>Page not found</p>;
     }
@@ -153,4 +181,3 @@ const App = () => {
 };
 
 export default App;
-

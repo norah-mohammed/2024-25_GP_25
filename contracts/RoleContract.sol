@@ -114,10 +114,12 @@ contract RoleContract {
     
     mapping(address => Distributor) public distributors;
     Retailer public retailer;
+    address[] public distributorAddresses;
+    mapping(address => bool) public isDistributor;
 
     event RetailerAdded(address retailer);
     event ManufacturerAdded(address manufacturer);
-    event DistributorAdded(address distributor);
+    event DistributorAdded(address indexed distributorAddress, string name);
     event RetailerUpdated(address retailer);
     event ManufacturerUpdated(address manufacturer);
     event DistributorUpdated(address distributor);
@@ -160,7 +162,7 @@ contract RoleContract {
 
   
 
-    // Function to add a distributor
+    // Distributor Functions
     function addDistributor(
         address _ethAddress,
         string memory _name,
@@ -174,6 +176,7 @@ contract RoleContract {
         bool _isAM,
         bool[7] memory _workingDays
     ) public {
+        require(distributors[_ethAddress].ethAddress == address(0), "Distributor already exists.");
         distributors[_ethAddress] = Distributor(
             _ethAddress, 
             _name, 
@@ -187,7 +190,16 @@ contract RoleContract {
             _isAM,
             _workingDays
         );
-        emit DistributorAdded(_ethAddress);
+        distributorAddresses.push(_ethAddress); // Store distributor address
+        isDistributor[_ethAddress] = true;
+        emit DistributorAdded(_ethAddress, _name);
+    }
+    
+     function getAllDistributorAddresses() public view returns (address[] memory) {
+        return distributorAddresses;
+    }
+     function checkDistributor(address _address) public view returns (bool) {
+        return isDistributor[_address];
     }
 
     // Update Distributor Info
@@ -263,4 +275,9 @@ contract RoleContract {
             d.workingDays
         );
     }
+
+    
+
+
+
 }

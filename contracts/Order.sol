@@ -26,6 +26,7 @@ contract OrderContract {
     uint public orderCounter = 0;
 
     event OrderStatusUpdated(uint orderId, string newStatus);
+    event DistributorAssigned(uint orderId, address distributor);
 
     // Function to create a new order
     function createOrder(
@@ -46,7 +47,7 @@ contract OrderContract {
             shippingAddress: _shippingAddress
         });
 
-          orders.push(Order({
+        orders.push(Order({
             orderId: orderCounter,
             retailer: msg.sender,
             manufacturer: _manufacturer,
@@ -76,95 +77,42 @@ contract OrderContract {
         emit OrderStatusUpdated(_orderId, _newStatus);
     }
 
-    // Function to get all order IDs
-    function getAllOrderIds() public view returns (uint[] memory) {
-        uint[] memory orderIds = new uint[](orders.length);
-        for (uint i = 0; i < orders.length; i++) {
-            orderIds[i] = orders[i].orderId;
-        }
-        return orderIds;
-    }
-
-    // Function to get retailer addresses for all orders
-    function getAllRetailerAddresses() public view returns (address[] memory) {
-        address[] memory retailerAddresses = new address[](orders.length);
-        for (uint i = 0; i < orders.length; i++) {
-            retailerAddresses[i] = orders[i].retailer;
-        }
-        return retailerAddresses;
-    }
-
-    // Function to get product IDs for all orders
-    function getAllProductIds() public view returns (uint[] memory) {
-        uint[] memory productIds = new uint[](orders.length);
-        for (uint i = 0; i < orders.length; i++) {
-            productIds[i] = orders[i].productId;
-        }
-        return productIds;
-    }
-
-    // Function to get quantities for all orders
-    function getAllQuantities() public view returns (uint[] memory) {
-        uint[] memory quantities = new uint[](orders.length);
-        for (uint i = 0; i < orders.length; i++) {
-            quantities[i] = orders[i].quantity;
-        }
-        return quantities;
-    }
-
-    // Function to get delivery dates for all orders
-    function getAllDeliveryDates() public view returns (string[] memory) {
-        string[] memory deliveryDates = new string[](orders.length);
-        for (uint i = 0; i < orders.length; i++) {
-            deliveryDates[i] = orders[i].deliveryInfo.deliveryDate;
-        }
-        return deliveryDates;
-    }
-
-    // Function to get statuses for all orders
-    function getAllStatuses() public view returns (string[] memory) {
-        string[] memory statuses = new string[](orders.length);
-        for (uint i = 0; i < orders.length; i++) {
-            statuses[i] = orders[i].status;
-        }
-        return statuses;
-    }
-
-    // Function to get all orders
-    function getAllOrders() public view returns (Order[] memory) {
-        return orders;
-    }
-
-    // Get order by ID
-    function getOrderById(uint _orderId) public view returns (Order memory) {
+    // Function to assign a distributor to an order
+    function assignDistributor(uint _orderId, address _distributor) public {
         require(_orderId > 0 && _orderId <= orderCounter, "Order does not exist.");
-        return orders[_orderId - 1];
+        Order storage order = orders[_orderId - 1];
+        require(keccak256(abi.encodePacked(order.status)) == keccak256(abi.encodePacked("Preparing for Dispatch")), "Order is not ready for dispatch.");
+        order.distributor = _distributor;
+        order.status = "Dispatched";
+        order.orderHistory = string(abi.encodePacked(order.orderHistory, " | Assigned to distributor: ", toAsciiString(_distributor)));
+        emit DistributorAssigned(_orderId, _distributor);
     }
 
-    // Get orders by distributor
-    function getOrdersByDistributor(address _distributor) public view returns (Order[] memory) {
-        uint orderCount = 0;
+    // Function to cancel an order
+    function cancelOrder(uint _orderId) public {
+        require(_orderId > 0 && _orderId <= orderCounter, "Order does not exist.");
+        Order storage order = orders[_orderId - 1];
+        order.status = "Canceled";
+        order.orderHistory = string(abi.encodePacked(order.orderHistory, " | Order canceled due to lack of transportation"));
+        emit OrderStatusUpdated(_orderId, "Canceled");
+    }
 
-        // First count how many orders this distributor has
-        for (uint i = 0; i < orders.length; i++) {
-            if (orders[i].distributor == _distributor) {
-                orderCount++;
-            }
+    // Helper function to convert address to string
+    function toAsciiString(address x) internal pure returns (string memory) {
+        bytes memory s = new bytes(40);
+        for (uint i = 0; i < 20; i++) {
+            bytes1 b = bytes1(uint8(uint(uint160(x)) / (2 ** (8 * (19 - i)))));
+            bytes1 hi = bytes1(uint8(b) / 16);
+            bytes1 lo = bytes1(uint8(b) - 16 * uint8(hi));
+            s[2 * i] = char(hi);
+            s[2 * i + 1] = char(lo);
         }
+        return string(s);
+    }
 
-        // Create an array to store the orders
-        Order[] memory distributorOrders = new Order[](orderCount);
-        uint index = 0;
-
-        // Add each order to the array
-        for (uint i = 0; i < orders.length; i++) {
-            if (orders[i].distributor == _distributor) {
-                distributorOrders[index] = orders[i];
-                index++;
-            }
-        }
-
-        return distributorOrders;
+    function char(bytes1 b) internal pure returns (bytes1 c) {
+        if (uint8(b) < 10) return bytes1(uint8(b) + 0x30);
+        else return bytes1(uint8(b) + 0x57);
     }
 
     // Get orders by manufacturer
@@ -184,5 +132,36 @@ contract OrderContract {
             }
         }
         return manufacturerOrders;
+    }
+
+    // Get all orders
+    function getAllOrders() public view returns (Order[] memory) {
+        return orders;
+    }
+
+    // Get orders by distributor
+    function getOrdersByDistributor(address _distributor) public view returns (Order[] memory) {
+        uint orderCount = 0;
+
+        // Count orders assigned to the given distributor
+        for (uint i = 0; i < orders.length; i++) {
+            if (orders[i].distributor == _distributor) {
+                orderCount++;
+            }
+        }
+
+        // Create an array to store distributor orders
+        Order[] memory distributorOrders = new Order[](orderCount);
+        uint index = 0;
+
+        // Populate the array with matching orders
+        for (uint i = 0; i < orders.length; i++) {
+            if (orders[i].distributor == _distributor) {
+                distributorOrders[index] = orders[i];
+                index++;
+            }
+        }
+
+        return distributorOrders;
     }
 }
