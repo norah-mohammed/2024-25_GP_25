@@ -39,7 +39,7 @@ Farm to Fork platform is a blockchain-based food supply chain management system 
 
 2. **Clone the Project**:
     ```bash
-    git clone https://github.com/faizack619/Supply-Chain-Blockchain.git
+    git clone https://github.com/norah-mohammed/2024-25_GP_25.git
     ```
 
 3. **Install Truffle**:
