@@ -13,7 +13,7 @@ const OrdersPage = () => {
   const [roleContract, setRoleContract] = useState(null);
   const [account, setAccount] = useState('');
   const [loading, setLoading] = useState(true);
-  const [notification, setNotification] = useState(''); // State for notifications
+  const [notification, setNotification] = useState('');
 
   useEffect(() => {
     const initWeb3 = async () => {
@@ -26,7 +26,6 @@ const OrdersPage = () => {
 
         const networkId = await web3Instance.eth.net.getId();
 
-        // Load contracts
         const orderDeployedNetwork = OrderContract.networks[networkId];
         const roleDeployedNetwork = RoleContract.networks[networkId];
 
@@ -93,7 +92,12 @@ const OrdersPage = () => {
           (order.deliveryInfo.deliveryTime === 'AM' && distributor.isAM) ||
           (order.deliveryInfo.deliveryTime === 'PM' && distributor.isPM);
 
-        if (worksOnDay && worksOnTime) {
+        const transportModeMatch =
+          (order.transportMode === 'Refrigerated' && distributor.isRefrigerated) ||
+          (order.transportMode === 'Frozen' && distributor.isFrozen) ||
+          (order.transportMode === 'Ambient' && distributor.isAmbient);
+
+        if (worksOnDay && worksOnTime && transportModeMatch) {
           filteredDistributors.push({
             name: distributor.name,
             ethAddress: distributorAddress,
@@ -116,7 +120,7 @@ const OrdersPage = () => {
 
   const showTemporaryNotification = (message) => {
     setNotification(message);
-    setTimeout(() => setNotification(''), 3000); // Clear notification after 5 seconds
+    setTimeout(() => setNotification(''), 3000);
   };
 
   const handleCreateOrder = async (orderId) => {
@@ -187,7 +191,7 @@ const OrdersPage = () => {
                     {order.status === 'Paid' && (
                       <button onClick={() => handleCreateOrder(order.orderId)}>Create Order</button>
                     )}
-                    {order.status === 'Preparing for Dispatch' && (
+                    {['Preparing for Dispatch', 'Rejected by Distributor'].includes(order.status) && (
                       <>
                         <button
                           onClick={() => {
