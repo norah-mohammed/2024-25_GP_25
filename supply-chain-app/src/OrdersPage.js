@@ -81,35 +81,35 @@ const OrdersPage = () => {
     try {
       const allDistributors = await roleContract.methods.getAllDistributorAddresses().call();
       const filteredDistributors = [];
-
+  
       for (const distributorAddress of allDistributors) {
         const distributor = await roleContract.methods.getDistributor(distributorAddress).call();
-
+  
+        // Calculate delivery day index for Saudi Arabia
         const deliveryDayIndex = getSaudiDayIndex(order.deliveryInfo.deliveryDate);
-
-        const worksOnDay = distributor.workingDays[deliveryDayIndex - 1];
+  
+        // Check working day and time
+        const worksOnDay = distributor.workingDays[deliveryDayIndex - 1]; // Adjusting for zero-based array
         const worksOnTime =
           (order.deliveryInfo.deliveryTime === 'AM' && distributor.isAM) ||
           (order.deliveryInfo.deliveryTime === 'PM' && distributor.isPM);
-
-        const transportModeMatch =
-          (order.transportMode === 'Refrigerated' && distributor.isRefrigerated) ||
-          (order.transportMode === 'Frozen' && distributor.isFrozen) ||
-          (order.transportMode === 'Ambient' && distributor.isAmbient);
-
-        if (worksOnDay && worksOnTime && transportModeMatch) {
+  
+        // If conditions are satisfied, add to the list
+        if (worksOnDay && worksOnTime) {
           filteredDistributors.push({
             name: distributor.name,
             ethAddress: distributorAddress,
           });
         }
       }
-
+  
       setDistributors(filteredDistributors);
     } catch (error) {
       console.error('Error fetching distributors:', error);
     }
   };
+  
+  
 
   const getSaudiDayIndex = (dateString) => {
     const date = new Date(dateString);
