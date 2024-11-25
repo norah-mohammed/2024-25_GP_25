@@ -22,6 +22,7 @@ const PlaceOrder = ({ productId, manufacturerAddress, goBack }) => {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
   const [notification, setNotification] = useState('');
+  const [orderPlaced, setOrderPlaced] = useState(false); // New state for tracking order placement
 
   const today = new Date().toISOString().split('T')[0];
 
@@ -115,22 +116,26 @@ const PlaceOrder = ({ productId, manufacturerAddress, goBack }) => {
           manufacturerAddress,
           form.deliveryDate,
           form.deliveryTime,
-          shippingAddress, // Use shipping address internally here
+          shippingAddress,
           productPrice
         )
         .send({ from: accounts[0] });
-
+  
       setNotification('Order placed successfully!');
+      setOrderPlaced(true); // Mark the order as placed
+  
+      // Redirect after a delay to show the notification
       setTimeout(() => {
         setNotification('');
-        goBack(); // Transition back after success message
-      }, 5000);
+        goBack(); // Redirect to the previous page
+      }, 2000);
     } catch (error) {
       console.error('Error placing order:', error);
     } finally {
       setLoading(false);
     }
   };
+  
 
   return (
     <div className="place-order-form">
@@ -154,40 +159,37 @@ const PlaceOrder = ({ productId, manufacturerAddress, goBack }) => {
           }}
         >
           <div>
-  <label>Quantity:</label>
-  <input
-    type="number"
-    name="quantity"
-    value={form.quantity}
-    onChange={handleChange}
-    disabled={loading}
-    min="1"
-    max="64"
-    style={{ borderColor: errors.quantity ? 'red' : undefined }}
-  />
-  {form.quantity === '' && <span style={{ color: 'red', marginLeft: '5px' }}>*</span>}
-  {errors.quantity && <div style={{ color: 'red' }}>{errors.quantity}</div>}
-  {/* Adding helper text under the input */}
-  <small style={{ color: 'gray' }}>Quantity must be between 1 and 64.</small>
-</div>
+            <label>Quantity:</label>
+            <input
+              type="number"
+              name="quantity"
+              value={form.quantity}
+              onChange={handleChange}
+              disabled={loading || orderPlaced} // Disable after order is placed
+              min="1"
+              max="64"
+              style={{ borderColor: errors.quantity ? 'red' : undefined }}
+            />
+            {form.quantity === '' && <span style={{ color: 'red', marginLeft: '5px' }}>*</span>}
+            {errors.quantity && <div style={{ color: 'red' }}>{errors.quantity}</div>}
+            <small style={{ color: 'gray' }}>Quantity must be between 1 and 64.</small>
+          </div>
 
-<div>
-  <label>Delivery Date:</label>
-  <input
-    type="date"
-    name="deliveryDate"
-    value={form.deliveryDate}
-    onChange={handleChange}
-    disabled={loading}
-    min={today}
-    style={{ borderColor: errors.deliveryDate ? 'red' : undefined }}
-  />
-  {form.deliveryDate === '' && <span style={{ color: 'red', marginLeft: '5px' }}>*</span>}
-  {errors.deliveryDate && <div style={{ color: 'red' }}>{errors.deliveryDate}</div>}
-  {/* Adding helper text for the delivery date */}
-  <small style={{ color: 'gray' }}>Delivery date must be within the next year and from today onwards.</small>
-</div>
-
+          <div>
+            <label>Delivery Date:</label>
+            <input
+              type="date"
+              name="deliveryDate"
+              value={form.deliveryDate}
+              onChange={handleChange}
+              disabled={loading || orderPlaced} // Disable after order is placed
+              min={today}
+              style={{ borderColor: errors.deliveryDate ? 'red' : undefined }}
+            />
+            {form.deliveryDate === '' && <span style={{ color: 'red', marginLeft: '5px' }}>*</span>}
+            {errors.deliveryDate && <div style={{ color: 'red' }}>{errors.deliveryDate}</div>}
+            <small style={{ color: 'gray' }}>Delivery date must be within the next year and from today onwards.</small>
+          </div>
 
           <div>
             <label>Delivery Time:</label>
@@ -195,15 +197,15 @@ const PlaceOrder = ({ productId, manufacturerAddress, goBack }) => {
               name="deliveryTime"
               value={form.deliveryTime}
               onChange={handleChange}
-              disabled={loading}
+              disabled={loading || orderPlaced} // Disable after order is placed
             >
               <option value="AM">AM</option>
               <option value="PM">PM</option>
             </select>
           </div>
 
-          <button type="submit" disabled={loading}>
-            {loading ? 'Placing Order...' : 'Place Order'}
+          <button type="submit" disabled={loading || orderPlaced}> {/* Disable after order is placed */}
+            {orderPlaced ? 'Order Placed' : loading ? 'Placing Order...' : 'Place Order'}
           </button>
         </form>
         {notification && <div className="notification">{notification}</div>}

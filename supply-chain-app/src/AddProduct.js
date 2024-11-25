@@ -15,8 +15,8 @@ const AddProduct = ({ productContract, accounts, loadProducts, onBack }) => {
   const [errors, setErrors] = useState({});
   const [successMessage, setSuccessMessage] = useState(''); // Success message
   const [step, setStep] = useState(1); // State for current step
+  const [productAdded, setProductAdded] = useState(false); // Track product addition status
 
-  // Function to format labels dynamically based on the field name
   const formatLabel = (key) => {
     let label = key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1');
     if (key === 'weight') label += ' (grams)';
@@ -24,12 +24,10 @@ const AddProduct = ({ productContract, accounts, loadProducts, onBack }) => {
     return label;
   };
 
-  // Function to handle changes and validation in input fields
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     let errorMsg = null;
 
-    // Validation for numeric fields to ensure they are positive
     if (['weight', 'price'].includes(name) && parseFloat(value) <= 0) {
       errorMsg = `${formatLabel(name)} must be positive.`;
     } else if (name === 'weight' && (parseInt(value, 10) < 1 || parseInt(value, 10) > 10000)) {
@@ -41,21 +39,16 @@ const AddProduct = ({ productContract, accounts, loadProducts, onBack }) => {
     }
 
     setErrors({ ...errors, [name]: errorMsg });
-    setNewProduct(prev => ({ ...prev, [name]: value }));
+    setNewProduct((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Function to validate description length on input
   const validateDescription = (e) => {
     const value = e.target.value;
     let errorMsg = value.length > 255 ? 'Description must be within 255 characters.' : null;
-    setErrors({
-      ...errors,
-      description: errorMsg
-    });
-    setNewProduct(prev => ({ ...prev, description: value }));
+    setErrors({ ...errors, description: errorMsg });
+    setNewProduct((prev) => ({ ...prev, description: value }));
   };
 
-  // Handle Next Step
   const handleNext = () => {
     if (step === 1 && isStep1Valid()) {
       setStep(2);
@@ -64,59 +57,65 @@ const AddProduct = ({ productContract, accounts, loadProducts, onBack }) => {
     }
   };
 
-  // Handle Back Step
   const handleBack = () => {
     setStep(1);
   };
 
   const addProduct = async () => {
-    if (Object.values(errors).some(error => error) || Object.values(newProduct).some(val => val.trim() === '')) {
-      console.error("Invalid input: Fix errors before submitting.");
+    if (
+      Object.values(errors).some((error) => error) ||
+      Object.values(newProduct).some((val) => val.trim() === '')
+    ) {
+      console.error('Invalid input: Fix errors before submitting.');
       return;
     }
 
     const { name, description, weight, price, itemsPerPack, transportMode } = newProduct;
     try {
-      await productContract.methods.addProduct(
-        name, description, parseInt(weight), parseInt(price), parseInt(itemsPerPack), parseInt(transportMode)
-      ).send({ from: accounts[0], gas: 3000000 });
+      await productContract.methods
+        .addProduct(
+          name,
+          description,
+          parseInt(weight),
+          parseInt(price),
+          parseInt(itemsPerPack),
+          parseInt(transportMode)
+        )
+        .send({ from: accounts[0], gas: 3000000 });
+
       setSuccessMessage('Product added successfully!');
+      setProductAdded(true); // Mark the product as added
       setTimeout(() => {
         loadProducts();
         setSuccessMessage(''); // Clear message
         onBack();
-      }, 5000); // Wait 5 seconds before redirecting
+      }, 2000);
     } catch (error) {
-      console.error("Error adding product:", error);
+      console.error('Error adding product:', error);
     }
   };
 
   const isStep1Valid = () => {
-    return (
-      newProduct.name &&
-      newProduct.description &&
-      !errors.name &&
-      !errors.description
-    );
+    return newProduct.name && newProduct.description && !errors.name && !errors.description;
   };
 
-  const isFormValid = () => Object.values(newProduct).every(val => val.trim() !== '') && Object.values(errors).every(val => !val);
+  const isFormValid = () =>
+    Object.values(newProduct).every((val) => val.trim() !== '') &&
+    Object.values(errors).every((val) => !val);
 
   return (
     <div className="add-product-form">
       <h2>Add New Product</h2>
       <button onClick={handleBack}>Back to Dashboard</button>
 
-      {/* Step Tracker */}
       <div className="step-tracker">
         <div className={`step ${step === 1 ? 'active' : ''}`}>1. Basic Product Information</div>
         <div className={`step ${step === 2 ? 'active' : ''}`}>2. Product Specifications</div>
       </div>
 
-      {/* Basic Product Info Section */}
       {step === 1 && (
         <div className="basic-product-info">
-          {['name', 'description'].map(key => (
+          {['name', 'description'].map((key) => (
             <div key={key}>
               <label>{formatLabel(key)}</label>
               {key === 'description' ? (
@@ -139,18 +138,19 @@ const AddProduct = ({ productContract, accounts, loadProducts, onBack }) => {
                 />
               )}
               <div style={{ color: errors[key] ? 'red' : 'grey', fontSize: '12px' }}>
-                {errors[key] || (key === 'weight' ? '1-10,000 grams' : key === 'itemsPerPack' ? '1-500 items' : key === 'name' ? '3-50 characters' : '')}
+                {errors[key] || (key === 'name' ? '3-50 characters' : '')}
               </div>
             </div>
           ))}
-          <button onClick={handleNext} disabled={!isStep1Valid()}>Next</button>
+          <button onClick={handleNext} disabled={!isStep1Valid()}>
+            Next
+          </button>
         </div>
       )}
 
-      {/* Product Specifications Section */}
       {step === 2 && (
         <div className="product-specifications">
-          {['weight', 'price', 'itemsPerPack'].map(key => (
+          {['weight', 'price', 'itemsPerPack'].map((key) => (
             <div key={key}>
               <label>{formatLabel(key)}</label>
               <input
@@ -168,17 +168,22 @@ const AddProduct = ({ productContract, accounts, loadProducts, onBack }) => {
           ))}
           <div>
             <label>Transport Mode</label>
-            <select name="transportMode" value={newProduct.transportMode} onChange={handleInputChange}>
+            <select
+              name="transportMode"
+              value={newProduct.transportMode}
+              onChange={handleInputChange}
+            >
               <option value="0">Refrigerated</option>
               <option value="1">Frozen</option>
               <option value="2">Ambient</option>
             </select>
           </div>
-          <button onClick={addProduct} disabled={!isFormValid()}>Add Product</button>
+          <button onClick={addProduct} disabled={!isFormValid() || productAdded}>
+            {productAdded ? 'Product Added' : 'Add Product'}
+          </button>
         </div>
       )}
 
-      {/* Success Message */}
       {successMessage && <div style={{ color: 'green', marginTop: '10px' }}>{successMessage}</div>}
     </div>
   );
