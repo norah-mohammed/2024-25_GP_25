@@ -285,8 +285,8 @@ button.cancel:hover {
 }
 
 .status.in-transit {
-  background-color: #eee39c; /* Light sky blue background for In Transit */
-  color: #ffea61; /* Dark blue text for contrast */
+  background-color: #ead65a; /* Light sky blue background for In Transit */
+  color: #ffffff; /* Dark blue text for contrast */
 }
 
 .status.waiting-for-payment {
