@@ -3,6 +3,7 @@ import getWeb3 from './web3';
 import OrderContract from './contracts/OrderContract.json';
 import ProductContract from './contracts/ProductContract.json';
 import RoleContract from './contracts/RoleContract.json';
+import './PlaceOrder.css';
 
 const PlaceOrder = ({ productId, manufacturerAddress, goBack }) => {
   const [form, setForm] = useState({
@@ -16,7 +17,7 @@ const PlaceOrder = ({ productId, manufacturerAddress, goBack }) => {
   const [productInstance, setProductInstance] = useState(null);
   const [roleInstance, setRoleInstance] = useState(null);
   const [productPrice, setProductPrice] = useState(0);
-  const [shippingAddress, setShippingAddress] = useState(''); // Used internally only
+  const [shippingAddress, setShippingAddress] = useState('');
   const [productInfo, setProductInfo] = useState({});
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
@@ -41,7 +42,6 @@ const PlaceOrder = ({ productId, manufacturerAddress, goBack }) => {
         setProductInstance(productContract);
         setRoleInstance(roleContract);
 
-        // Fetch product details and store them in state
         const productDetails = await productContract.methods.getProductById(productId).call();
         setProductInfo({
           id: Number(productDetails.productId) || 'N/A',
@@ -55,7 +55,6 @@ const PlaceOrder = ({ productId, manufacturerAddress, goBack }) => {
         });
         setProductPrice(Number(productDetails.price) || 0);
 
-        // Fetch the retailer's shipping address for internal use only
         const retailerDetails = await roleContract.methods.getRetailer().call();
         setShippingAddress(retailerDetails.physicalAddress);
       } catch (error) {
@@ -134,88 +133,81 @@ const PlaceOrder = ({ productId, manufacturerAddress, goBack }) => {
   };
 
   return (
-    <div>
-      <h2>Product Information</h2>
-      <div style={{ marginBottom: '20px' }}>
+    <div className="place-order-form">
+      <div className="product-info">
+        <h2>Product Information</h2>
         <p><strong>ID:</strong> {productInfo.id}</p>
         <p><strong>Name:</strong> {productInfo.name}</p>
         <p><strong>Description:</strong> {productInfo.description}</p>
         <p><strong>Weight:</strong> {productInfo.weight} kg</p>
         <p><strong>Price:</strong> {productInfo.price} SAR</p>
-        <p><strong>Items per Pack:</strong> {productInfo.itemsPerPack}</p>        <p><strong>Transport Mode:</strong> {productInfo.transportMode}</p>
+        <p><strong>Items per Pack:</strong> {productInfo.itemsPerPack}</p>
+        <p><strong>Transport Mode:</strong> {productInfo.transportMode}</p>
       </div>
 
-      <h2>Place Order</h2>
-      <form
-  onSubmit={(e) => {
-    e.preventDefault();
-    placeOrder();
-  }}
->
-  <div>
-    <label>Quantity:</label>
-    <input
-      type="number"
-      name="quantity"
-      value={form.quantity}
-      onChange={handleChange}
-      disabled={loading}
-      min="1"
-      max="64"
-      style={{ borderColor: errors.quantity ? 'red' : undefined }}
-    />
-    {form.quantity === '' && <span style={{ color: 'red', marginLeft: '5px' }}>*</span>}
-    {errors.quantity && <div style={{ color: 'red' }}>{errors.quantity}</div>}
-    <div style={{ color: 'grey' }}>Quantity should be between 1 and 64.</div>
-  </div>
+      <div className="order-form">
+        <h2>Place Order</h2>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            placeOrder();
+          }}
+        >
+          <div>
+  <label>Quantity:</label>
+  <input
+    type="number"
+    name="quantity"
+    value={form.quantity}
+    onChange={handleChange}
+    disabled={loading}
+    min="1"
+    max="64"
+    style={{ borderColor: errors.quantity ? 'red' : undefined }}
+  />
+  {form.quantity === '' && <span style={{ color: 'red', marginLeft: '5px' }}>*</span>}
+  {errors.quantity && <div style={{ color: 'red' }}>{errors.quantity}</div>}
+  {/* Adding helper text under the input */}
+  <small style={{ color: 'gray' }}>Quantity must be between 1 and 64.</small>
+</div>
 
-  <div>
-    <label>Delivery Date:</label>
-    <input
-      type="date"
-      name="deliveryDate"
-      value={form.deliveryDate}
-      onChange={handleChange}
-      disabled={loading}
-      min={today}
-      style={{ borderColor: errors.deliveryDate ? 'red' : undefined }}
-    />
-    {form.deliveryDate === '' && <span style={{ color: 'red', marginLeft: '5px' }}>*</span>}
-    {errors.deliveryDate && <div style={{ color: 'red' }}>{errors.deliveryDate}</div>}
-    <div style={{ color: 'grey' }}>Date should be in the future and within the next year.</div>
-  </div>
+<div>
+  <label>Delivery Date:</label>
+  <input
+    type="date"
+    name="deliveryDate"
+    value={form.deliveryDate}
+    onChange={handleChange}
+    disabled={loading}
+    min={today}
+    style={{ borderColor: errors.deliveryDate ? 'red' : undefined }}
+  />
+  {form.deliveryDate === '' && <span style={{ color: 'red', marginLeft: '5px' }}>*</span>}
+  {errors.deliveryDate && <div style={{ color: 'red' }}>{errors.deliveryDate}</div>}
+  {/* Adding helper text for the delivery date */}
+  <small style={{ color: 'gray' }}>Delivery date must be within the next year and from today onwards.</small>
+</div>
 
-  <div>
-    <label>Delivery Time:</label>
-    <select
-      name="deliveryTime"
-      value={form.deliveryTime}
-      onChange={handleChange}
-      disabled={loading}
-    >
-      <option value="AM">AM</option>
-      <option value="PM">PM</option>
-    </select>
-  </div>
 
-  <button
-    type="submit"
-    disabled={
-      loading ||
-      !form.quantity ||
-      !form.deliveryDate ||
-      !form.deliveryTime ||
-      Object.keys(errors).some((k) => errors[k])
-    }
-  >
-    {loading ? 'Placing Order...' : 'Place Order'}
-  </button>
-</form>
+          <div>
+            <label>Delivery Time:</label>
+            <select
+              name="deliveryTime"
+              value={form.deliveryTime}
+              onChange={handleChange}
+              disabled={loading}
+            >
+              <option value="AM">AM</option>
+              <option value="PM">PM</option>
+            </select>
+          </div>
 
-      {notification && <div style={{ color: 'green', marginTop: '10px' }}>{notification}</div>}
-      <button onClick={goBack} disabled={loading}>
-        Go Back
-      </button>
+          <button type="submit" disabled={loading}>
+            {loading ? 'Placing Order...' : 'Place Order'}
+          </button>
+        </form>
+        {notification && <div className="notification">{notification}</div>}
+      </div>
     </div>
   );
 };

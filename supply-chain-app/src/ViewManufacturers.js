@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react'; 
 import getWeb3 from './web3';
 import RoleContract from './contracts/RoleContract.json';
+import "./ViewManufacturers.css";
 
 const ViewManufacturers = ({ onViewProducts }) => {
   const [manufacturers, setManufacturers] = useState([]);
@@ -74,21 +75,27 @@ const ViewManufacturers = ({ onViewProducts }) => {
   if (!isRetailer) return <div><h2>{errorMessage}</h2></div>;
 
   return (
-    <div>
-      <h2>Available Manufacturers</h2>
-     
-      {errorMessage && <p>{errorMessage}</p>}
-      <div>
+    <div className="view-manufacturers-container">
+      <h2 className="page-title">Available Manufacturers</h2>
+      {errorMessage && <p className="error-message">{errorMessage}</p>}
+      <input
+        className="search-bar"
+        type="text"
+        placeholder="Search manufacturers..."
+        value={searchTerm}
+        onChange={handleSearchChange}
+      />
+      <div className="manufacturer-cards">
         {manufacturers.length === 0 ? (
-          <p>No manufacturers found.</p>
+          <p className="no-manufacturers">No manufacturers found.</p>
         ) : (
           manufacturers.map((manufacturer, index) => (
-            <div key={index}>
+            <div className="manufacturer-card" key={index}>
               <h3>{manufacturer.name}</h3>
               <p><strong>Address:</strong> {manufacturer.addressLine}</p>
               <p><strong>Email:</strong> {manufacturer.email}</p>
               <p><strong>Phone:</strong> {manufacturer.phoneNumber}</p>
-              <button onClick={() => onViewProducts(manufacturer.ethAddress)}>View Products</button>
+              <button className="view-products-btn" onClick={() => onViewProducts(manufacturer.ethAddress)}>View Products</button>
             </div>
           ))
         )}

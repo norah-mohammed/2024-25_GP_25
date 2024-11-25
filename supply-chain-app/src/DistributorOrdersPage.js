@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import getWeb3 from './web3';
 import OrderContract from './contracts/OrderContract.json';
 import RoleContract from './contracts/RoleContract.json';
+import "./ordersPage.css";
 
 const DistributorOrdersPage = () => {
   const [orders, setOrders] = useState([]);
@@ -10,7 +11,7 @@ const DistributorOrdersPage = () => {
   const [roleContract, setRoleContract] = useState(null);
   const [account, setAccount] = useState('');
   const [loading, setLoading] = useState(true);
-  const [notification, setNotification] = useState(''); // State for notifications
+  const [notification, setNotification] = useState('');
 
   useEffect(() => {
     const initWeb3 = async () => {
@@ -72,7 +73,7 @@ const DistributorOrdersPage = () => {
 
   const showTemporaryNotification = (message) => {
     setNotification(message);
-    setTimeout(() => setNotification(''), 3000); // Clear notification after 3 seconds
+    setTimeout(() => setNotification(''), 3000);
   };
 
   const handleStartTransmission = async (orderId) => {
@@ -96,43 +97,47 @@ const DistributorOrdersPage = () => {
   };
 
   return (
-    <div>
-      <h1>Distributor Orders Page</h1>
-      {notification && <div style={{ color: 'green', marginBottom: '10px' }}>{notification}</div>}
+    <div className="distributor-orders-page">
+      <h1 className="page-title">Distributor Orders Page</h1>
+      {notification && <div className="notification">{notification}</div>}
       {loading ? (
-        <p>Loading orders...</p>
+        <p className="loading-message">Loading orders...</p>
       ) : orders.length > 0 ? (
-        <table border="1">
+        <table className="orders-table">
           <thead>
-            <tr>
-              <th>Order ID</th>
-              <th>Product ID</th>
-              <th>Quantity</th>
-              <th>Delivery Date</th>
-              <th>Delivery Time</th>
-              <th>Shipping Address</th>
-              <th>Status</th>
-              <th>Manufacturer</th>
-              <th>Actions</th>
+            <tr className="table-header">
+              <th className="header-cell">Order ID</th>
+              <th className="header-cell">Product ID</th>
+              <th className="header-cell">Quantity</th>
+              <th className="header-cell">Delivery Date</th>
+              <th className="header-cell">Delivery Time</th>
+              <th className="header-cell">Shipping Address</th>
+              <th className="header-cell">Status</th>
+              <th className="header-cell">Manufacturer</th>
+              <th className="header-cell">Actions</th>
             </tr>
           </thead>
           <tbody>
             {orders.map((order, index) => (
-              <tr key={index}>
-                <td>{parseInt(order.orderId)}</td>
-                <td>{parseInt(order.productId)}</td>
-                <td>{parseInt(order.quantity)}</td>
-                <td>{order.deliveryInfo.deliveryDate}</td>
-                <td>{order.deliveryInfo.deliveryTime}</td>
-                <td>{order.deliveryInfo.shippingAddress}</td>
-                <td>{order.status}</td>
-                <td>{order.manufacturerName}</td>
-                <td>
+              <tr key={index} className="table-row">
+                <td className="table-cell">{parseInt(order.orderId)}</td>
+                <td className="table-cell">{parseInt(order.productId)}</td>
+                <td className="table-cell">{parseInt(order.quantity)}</td>
+                <td className="table-cell">{order.deliveryInfo.deliveryDate}</td>
+                <td className="table-cell">{order.deliveryInfo.deliveryTime}</td>
+                <td className="table-cell">{order.deliveryInfo.shippingAddress}</td>
+                <td className={`status ${order.status.toLowerCase().replace(/\s+/g, '-')}`}>{order.status}</td>
+                <td className="table-cell">{order.manufacturerName}</td>
+                <td className="actions-cell">
                   {order.status === 'Accepted by Distributor' && (
-                    <button onClick={() => handleStartTransmission(order.orderId)}>Transmit</button>
+                    <button className="transmit-button" onClick={() => handleStartTransmission(order.orderId)}>
+                      Transmit
+                    </button>
                   )}
                   {order.status === 'In Transit' && (
-                    <button onClick={() => handleConfirmDelivery(order.orderId)}>Confirm Delivery</button>
+                    <button className="confirm-delivery-button" onClick={() => handleConfirmDelivery(order.orderId)}>
+                      Confirm Delivery
+                    </button>
                   )}
                 </td>
               </tr>
@@ -140,11 +145,10 @@ const DistributorOrdersPage = () => {
           </tbody>
         </table>
       ) : (
-        <p>No orders assigned.</p>
+        <p className="no-orders-message">No orders assigned.</p>
       )}
     </div>
   );
 };
 
 export default DistributorOrdersPage;
-

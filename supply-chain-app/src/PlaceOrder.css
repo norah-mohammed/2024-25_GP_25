@@ -1,0 +1,127 @@
+/* PlaceOrder.css */
+
+.place-order-form {
+    display: flex;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f4f4f4;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-left: 240px;
+  }
+  
+  .product-info {
+    width: 40%; /* Take up 40% of the form's width */
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #ffff;
+    color: #000;
+  }
+  
+  .product-info h2 {
+    text-align: center;
+    margin-bottom: 15px;
+    color: #000;
+  }
+  
+  .product-info p {
+    margin: 30px 0; /* Added margin to space out the product info */
+    color: #3b3b3b;
+  }
+  
+  .order-form {
+    width: 55%; /* Take up 55% of the form's width */
+    padding: 20px;
+    border-radius: 8px;
+  }
+  
+  .order-form h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #000;
+  }
+  
+  .order-form div {
+    margin-bottom: 15px;
+  }
+  
+  .order-form label {
+    display: block;
+    font-weight: bold;
+  }
+  
+  .order-form input[type="number"],
+  .order-form input[type="date"] {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+  }
+  
+  .order-form input[type="number"]:disabled,
+  .order-form input[type="date"]:disabled {
+    background-color: #f0f0f0;
+  }
+  
+  .order-form input[type="number"]:focus,
+  .order-form input[type="date"]:focus {
+    outline: none;
+    border-color: #66afe9;
+  }
+  
+  .order-form .error {
+    color: red;
+    font-size: 12px;
+  }
+  
+  .order-form .notification {
+    color: green;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .order-form button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+  }
+  
+  .order-form button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  .order-form button:hover {
+    background-color: #45a049;
+  }
+  
+  @media screen and (max-width: 768px) {
+    .place-order-form {
+      flex-direction: column; /* Stack the sections vertically on smaller screens */
+      padding: 15px;
+    }
+  
+    .product-info, .order-form {
+      width: 100%; /* Full width on smaller screens */
+      margin-bottom: 20px; /* Add some space between the sections */
+    }
+  
+    .order-form input[type="number"],
+    .order-form input[type="date"] {
+      font-size: 14px;
+    }
+  
+    .order-form button {
+      font-size: 14px;
+    }
+  }
+  

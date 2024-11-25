@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import getWeb3 from './web3';
 import RoleContract from './contracts/RoleContract.json';
 import OrderContract from './contracts/OrderContract.json';
 import ProductContract from './contracts/ProductContract.json';
+import './DistributorHomePage.css';
 
 const DistributorHomePage = () => {
   const [distributorInfo, setDistributorInfo] = useState(null);
@@ -12,9 +13,11 @@ const DistributorHomePage = () => {
   const [orderContract, setOrderContract] = useState(null);
   const [productContract, setProductContract] = useState(null);
   const [account, setAccount] = useState('');
-  const [loading, setLoading] = useState(true);
-  const [notification, setNotification] = useState(''); // Notification state
+  const [loadingRequests, setLoadingRequests] = useState(true);
+  const [loadingInfo, setLoadingInfo] = useState(true);
+  const [notification, setNotification] = useState('');
 
+  // Initialize web3 and contracts
   useEffect(() => {
     const initWeb3 = async () => {
       try {
@@ -26,7 +29,6 @@ const DistributorHomePage = () => {
 
         const networkId = await web3Instance.eth.net.getId();
 
-        // Load contracts
         const roleDeployedNetwork = RoleContract.networks[networkId];
         const roleInstance = new web3Instance.eth.Contract(
           RoleContract.abi,
@@ -48,7 +50,6 @@ const DistributorHomePage = () => {
         );
         setProductContract(productInstance);
 
-        // Fetch initial data
         fetchDistributorInfo(roleInstance, accounts[0]);
         fetchDeliveryRequests(orderInstance, accounts[0], roleInstance, productInstance);
       } catch (error) {
@@ -61,10 +62,13 @@ const DistributorHomePage = () => {
 
   const fetchDistributorInfo = async (contract, account) => {
     try {
+      setLoadingInfo(true);
       const distributor = await contract.methods.getDistributor(account).call();
       setDistributorInfo(distributor);
     } catch (error) {
       console.error('Error fetching distributor info:', error);
+    } finally {
+      setLoadingInfo(false);
     }
   };
 
@@ -74,9 +78,9 @@ const DistributorHomePage = () => {
     2: 'Ambient',
   };
 
-  const fetchDeliveryRequests = async (orderContract, account, roleContract, productContract) => {
+  const fetchDeliveryRequests = useCallback(async (orderContract, account, roleContract, productContract) => {
     try {
-      setLoading(true);
+      setLoadingRequests(true);
       const requests = await orderContract.methods.getOrdersByDistributor(account).call();
       const dispatchedOrders = requests.filter(order => order.status === 'Dispatched');
 
@@ -87,9 +91,9 @@ const DistributorHomePage = () => {
 
           return {
             ...order,
-            manufacturerName: manufacturer.name,
+            manufacturerName: manufacturer.name || 'Unknown Manufacturer',
             transportMode: transportModeMapping[parseInt(product.transportMode)] || 'Unknown',
-            weight: parseInt(product.weight),
+            weight: parseInt(product.weight) || 0,
             temperatureRange: `${product.minTemp}°C - ${product.maxTemp}°C`,
           };
         })
@@ -99,15 +103,19 @@ const DistributorHomePage = () => {
     } catch (error) {
       console.error('Error fetching delivery requests:', error);
     } finally {
-      setLoading(false);
+      setLoadingRequests(false);
     }
+  }, []);
+
+  const handleNotification = (message) => {
+    setNotification(message);
+    setTimeout(() => setNotification(''), 3000); // Clear notification after 3 seconds
   };
 
   const handleAcceptRequest = async (orderId) => {
     try {
       await orderContract.methods.updateOrderStatus(orderId, 'Accepted by Distributor').send({ from: account });
-      setNotification(`Order ${orderId} has been accepted.`); // Set notification
-      setTimeout(() => setNotification(''), 3000); // Clear notification after 3 seconds
+      handleNotification(`Order ${orderId} has been accepted.`);
       fetchDeliveryRequests(orderContract, account, roleContract, productContract);
     } catch (error) {
       console.error('Error accepting delivery request:', error);
@@ -117,8 +125,7 @@ const DistributorHomePage = () => {
   const handleRejectRequest = async (orderId) => {
     try {
       await orderContract.methods.updateOrderStatus(orderId, 'Rejected by Distributor').send({ from: account });
-      setNotification(`Order ${orderId} has been rejected.`); // Set notification
-      setTimeout(() => setNotification(''), 5000); // Clear notification after 5 seconds
+      handleNotification(`Order ${orderId} has been rejected.`);
       fetchDeliveryRequests(orderContract, account, roleContract, productContract);
     } catch (error) {
       console.error('Error rejecting delivery request:', error);
@@ -126,69 +133,52 @@ const DistributorHomePage = () => {
   };
 
   return (
-    <div>
-      <h1>Distributor Home Page</h1>
-      {notification && (
-        <div style={{ color: 'green', marginBottom: '10px' }}>
-          {notification}
-        </div>
-      )}
-      {distributorInfo ? (
-        <div>
-          <h2>Distributor Info</h2>
-          <p><strong>Name:</strong> {distributorInfo.name}</p>
-          <p><strong>Address:</strong> {distributorInfo.physicalAddress}</p>
-          <p><strong>Phone:</strong> {distributorInfo.phoneNumber}</p>
-          <p><strong>Email:</strong> {distributorInfo.email}</p>
-        </div>
-      ) : (
-        <p>Loading distributor info...</p>
-      )}
+    <div className="container">
+      {/* Distributor Info Section */}
+      <div className="distributor-info">
+        {loadingInfo ? (
+          <p>Loading distributor info...</p>
+        ) : distributorInfo ? (
+          <>
+            <h2>{distributorInfo.name}</h2>
+            <p><strong>Address:</strong> {distributorInfo.physicalAddress}</p>
+            <p><strong>Phone:</strong> {distributorInfo.phoneNumber}</p>
+            <p><strong>Email:</strong> {distributorInfo.email}</p>
+          </>
+        ) : (
+          <p>Distributor info not available.</p>
+        )}
+      </div>
 
+      {/* Delivery Requests Section */}
       <h2>Delivery Requests</h2>
-      {loading ? (
-        <p>Loading delivery requests...</p>
-      ) : deliveryRequests.length > 0 ? (
-        <table border="1">
-          <thead>
-            <tr>
-              <th>Order ID</th>
-              <th>Quantity</th>
-              <th>Weight (kg)</th>
-              <th>Delivery Time</th>
-              <th>Delivery Date</th>
-              <th>Day</th>
-              <th>Delivery Address</th>
-              <th>Manufacturer</th>
-              <th>Transport Mode</th>
-              <th>Temperature Range</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {deliveryRequests.map((order, index) => (
-              <tr key={index}>
-                <td>{parseInt(order.orderId)}</td>
-                <td>{parseInt(order.quantity)}</td>
-                <td>{parseInt(order.weight)}</td>
-                <td>{order.deliveryInfo.deliveryTime}</td>
-                <td>{order.deliveryInfo.deliveryDate}</td>
-                <td>{new Date(order.deliveryInfo.deliveryDate).toLocaleDateString('en-SA', { weekday: 'long' })}</td>
-                <td>{order.deliveryInfo.shippingAddress}</td>
-                <td>{order.manufacturerName}</td>
-                <td>{order.transportMode}</td>
-                <td>{order.temperatureRange}</td>
-                <td>
-                  <button onClick={() => handleAcceptRequest(order.orderId)}>Accept</button>
-                  <button onClick={() => handleRejectRequest(order.orderId)}>Reject</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      ) : (
-        <p>No delivery requests available.</p>
-      )}
+      {notification && <div className="notification">{notification}</div>}
+      <div className="orders-section">
+        {loadingRequests ? (
+          <p>Loading delivery requests...</p>
+        ) : deliveryRequests.length > 0 ? (
+          deliveryRequests.map((order, index) => (
+            <div className="order-card" key={index}>
+              <p><strong>Order ID:</strong> {parseInt(order.orderId)}</p>
+              <p><strong>Quantity:</strong> {parseInt(order.quantity)}</p>
+              <p><strong>Weight (kg):</strong> {parseInt(order.weight)}</p>
+              <p><strong>Delivery Time:</strong> {order.deliveryInfo.deliveryTime}</p>
+              <p><strong>Delivery Date:</strong> {order.deliveryInfo.deliveryDate}</p>
+              <p><strong>Day:</strong> {new Date(order.deliveryInfo.deliveryDate).toLocaleDateString('en-SA', { weekday: 'long' })}</p>
+              <p><strong>Delivery Address:</strong> {order.deliveryInfo.shippingAddress}</p>
+              <p><strong>Manufacturer:</strong> {order.manufacturerName}</p>
+              <p><strong>Transport Mode:</strong> {order.transportMode}</p>
+              <p><strong>Temperature Range:</strong> {order.temperatureRange}</p>
+              <div className="actions">
+                <button className="btn-accept" onClick={() => handleAcceptRequest(order.orderId)}>Accept</button>
+                <button className="btn-reject" onClick={() => handleRejectRequest(order.orderId)}>Reject</button>
+              </div>
+            </div>
+          ))
+        ) : (
+          <p>No delivery requests available.</p>
+        )}
+      </div>
     </div>
   );
 };

@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react'; 
 import getWeb3 from './web3';
 import OrderContract from './contracts/OrderContract.json';
 import RoleContract from './contracts/RoleContract.json';
+import "./ordersPage.css";
 
 const OrdersPage = () => {
   const [orders, setOrders] = useState([]);
@@ -14,6 +15,8 @@ const OrdersPage = () => {
   const [account, setAccount] = useState('');
   const [loading, setLoading] = useState(true);
   const [notification, setNotification] = useState('');
+
+  const selectDistributorRef = useRef(null);
 
   useEffect(() => {
     const initWeb3 = async () => {
@@ -57,15 +60,12 @@ const OrdersPage = () => {
 
       const ordersWithDistributorNames = await Promise.all(
         allOrders.map(async (order) => {
-          let distributorName = 'N/A';
+          let distributorName = 'Not Assigned';
           if (order.distributor && order.distributor !== '0x0000000000000000000000000000000000000000') {
             const distributor = await roleContract.methods.getDistributor(order.distributor).call();
             distributorName = distributor.name;
           }
-          return {
-            ...order,
-            distributorName,
-          };
+          return { ...order, distributorName };
         })
       );
 
@@ -81,20 +81,16 @@ const OrdersPage = () => {
     try {
       const allDistributors = await roleContract.methods.getAllDistributorAddresses().call();
       const filteredDistributors = [];
-  
+
       for (const distributorAddress of allDistributors) {
         const distributor = await roleContract.methods.getDistributor(distributorAddress).call();
-  
-        // Calculate delivery day index for Saudi Arabia
         const deliveryDayIndex = getSaudiDayIndex(order.deliveryInfo.deliveryDate);
-  
-        // Check working day and time
-        const worksOnDay = distributor.workingDays[deliveryDayIndex - 1]; // Adjusting for zero-based array
+
+        const worksOnDay = distributor.workingDays[deliveryDayIndex - 1];
         const worksOnTime =
           (order.deliveryInfo.deliveryTime === 'AM' && distributor.isAM) ||
           (order.deliveryInfo.deliveryTime === 'PM' && distributor.isPM);
-  
-        // If conditions are satisfied, add to the list
+
         if (worksOnDay && worksOnTime) {
           filteredDistributors.push({
             name: distributor.name,
@@ -102,14 +98,12 @@ const OrdersPage = () => {
           });
         }
       }
-  
+
       setDistributors(filteredDistributors);
     } catch (error) {
       console.error('Error fetching distributors:', error);
     }
   };
-  
-  
 
   const getSaudiDayIndex = (dateString) => {
     const date = new Date(dateString);
@@ -132,6 +126,24 @@ const OrdersPage = () => {
       console.error('Error updating order status to Preparing for Dispatch:', error);
     }
   };
+  const handleAssignDistributorClick = async (order) => {
+    setSelectedOrder(order.orderId);
+    await fetchDistributors(order);
+  
+    // Delay the popup visibility and smooth scroll to the 'Select Distributor' section
+    setShowPopup(true);
+  
+    setTimeout(() => {
+      if (selectDistributorRef.current) {
+        selectDistributorRef.current.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start', // Align the section to the top of the viewport
+          inline: 'nearest', // Ensure it's visible in the viewport
+        });
+      }
+    }, 100); // Adding a 100ms delay after the state update for smooth scrolling
+  };
+  
 
   const handleAssignDistributor = async (distributorAddress) => {
     try {
@@ -155,9 +167,9 @@ const OrdersPage = () => {
   };
 
   return (
-    <div>
-      <h1>Orders Page</h1>
-      {notification && <div style={{ color: 'green', marginBottom: '10px' }}>{notification}</div>}
+    <div className="ordersSection">
+      <h1>Orders</h1>
+      {notification && <div className="notification">{notification}</div>}
       {loading ? (
         <p>Loading orders...</p>
       ) : (
@@ -185,23 +197,19 @@ const OrdersPage = () => {
                   <td>{order.deliveryInfo.deliveryDate}</td>
                   <td>{order.deliveryInfo.deliveryTime}</td>
                   <td>{order.deliveryInfo.shippingAddress}</td>
-                  <td>{order.status}</td>
+                  <td>
+                    <span className={`status ${order.status.toLowerCase().replace(/\s+/g, '-')}`}>
+                      {order.status}
+                    </span>
+                  </td>
                   <td>{order.distributorName}</td>
                   <td>
                     {order.status === 'Paid' && (
-                      <button onClick={() => handleCreateOrder(order.orderId)}>Create Order</button>
+                      <button onClick={() => handleCreateOrder(order.orderId)}>Prepare Order</button>
                     )}
-                    {['Preparing for Dispatch', 'Rejected by Distributor'].includes(order.status) && (
+                    {['Preparing for Dispatch', 'Rejected by Distributor'].includes(order.status) && order.status !== 'Rejected by Distributor' && (
                       <>
-                        <button
-                          onClick={() => {
-                            setSelectedOrder(order.orderId);
-                            fetchDistributors(order);
-                            setShowPopup(true);
-                          }}
-                        >
-                          Assign Distributor
-                        </button>
+                        <button onClick={() => handleAssignDistributorClick(order)}>Assign Distributor</button>
                         <button onClick={() => handleCancelOrder(order.orderId)}>Cancel</button>
                       </>
                     )}
@@ -218,7 +226,7 @@ const OrdersPage = () => {
       )}
 
       {showPopup && (
-        <div className="popup">
+        <div ref={selectDistributorRef} className="popup">
           <h2>Select Distributor</h2>
           <ul>
             {distributors.map((distributor) => (
@@ -228,7 +236,7 @@ const OrdersPage = () => {
               </li>
             ))}
           </ul>
-          <button onClick={() => setShowPopup(false)}>Close</button>
+          <button className="close-button" onClick={() => setShowPopup(false)}>Close</button>
         </div>
       )}
     </div>

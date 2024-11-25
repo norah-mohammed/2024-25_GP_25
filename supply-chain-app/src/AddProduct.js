@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import './AddProduct.css';
+import './HeaderFooter.css'; // Header and Footer styling
 
 const AddProduct = ({ productContract, accounts, loadProducts, onBack }) => {
   const [newProduct, setNewProduct] = useState({
@@ -7,11 +9,12 @@ const AddProduct = ({ productContract, accounts, loadProducts, onBack }) => {
     weight: '',
     price: '',
     itemsPerPack: '',
-    transportMode: '0' // Defaulting to '0' for Refrigerated
+    transportMode: '0', // Defaulting to '0' for Refrigerated
   });
 
   const [errors, setErrors] = useState({});
-  const [successMessage, setSuccessMessage] = useState(''); // State for managing success notifications
+  const [successMessage, setSuccessMessage] = useState(''); // Success message
+  const [step, setStep] = useState(1); // State for current step
 
   // Function to format labels dynamically based on the field name
   const formatLabel = (key) => {
@@ -52,12 +55,26 @@ const AddProduct = ({ productContract, accounts, loadProducts, onBack }) => {
     setNewProduct(prev => ({ ...prev, description: value }));
   };
 
+  // Handle Next Step
+  const handleNext = () => {
+    if (step === 1 && isStep1Valid()) {
+      setStep(2);
+    } else if (step === 2) {
+      addProduct();
+    }
+  };
+
+  // Handle Back Step
+  const handleBack = () => {
+    setStep(1);
+  };
+
   const addProduct = async () => {
     if (Object.values(errors).some(error => error) || Object.values(newProduct).some(val => val.trim() === '')) {
       console.error("Invalid input: Fix errors before submitting.");
       return;
     }
-  
+
     const { name, description, weight, price, itemsPerPack, transportMode } = newProduct;
     try {
       await productContract.methods.addProduct(
@@ -73,65 +90,95 @@ const AddProduct = ({ productContract, accounts, loadProducts, onBack }) => {
       console.error("Error adding product:", error);
     }
   };
-  
 
-  // Function to handle going back
-  const handleBack = () => {
-    onBack();
+  const isStep1Valid = () => {
+    return (
+      newProduct.name &&
+      newProduct.description &&
+      !errors.name &&
+      !errors.description
+    );
   };
 
   const isFormValid = () => Object.values(newProduct).every(val => val.trim() !== '') && Object.values(errors).every(val => !val);
 
   return (
-    <div>
+    <div className="add-product-form">
       <h2>Add New Product</h2>
       <button onClick={handleBack}>Back to Dashboard</button>
-      {Object.keys(newProduct).filter(key => key !== 'transportMode').map(key => (
-        <div key={key}>
-          <label>
-            {formatLabel(key)}
-          </label>
-          {key === 'description' ? (
-            <textarea
-              name="description"
-              placeholder="Description (1-255 characters)"
-              value={newProduct.description}
-              onChange={handleInputChange}
-              onInput={validateDescription}
-              style={{ borderColor: errors[key] ? 'red' : undefined, width: '99%' }}
-            />
-          ) : (
-            <input
-              type={key.includes('weight') || key === 'price' || key === 'itemsPerPack' ? 'number' : 'text'}
-              name={key}
-              placeholder={formatLabel(key)}
-              value={newProduct[key]}
-              onInput={handleInputChange}
-              style={{ borderColor: errors[key] ? 'red' : undefined }}
-            />
-          )}
-          <span style={{color: newProduct[key] ? 'transparent' : 'red'}}>*</span>
-          <div style={{ color: errors[key] ? 'red' : 'grey', fontSize: '12px' }}>
-            {errors[key] || (key === 'weight' ? '1-10,000 grams' : key === 'itemsPerPack' ? '1-500 items' : key === 'name' ? '3-50 characters' : '')}
-          </div>
-        </div>
-      ))}
-      <div>
-        <label>
-          Transport Mode
-        </label>
-        <select
-          name="transportMode"
-          value={newProduct.transportMode}
-          onChange={handleInputChange}
-        >
-          <option value="0">Refrigerated</option>
-          <option value="1">Frozen</option>
-          <option value="2">Ambient</option>
-        </select>
+
+      {/* Step Tracker */}
+      <div className="step-tracker">
+        <div className={`step ${step === 1 ? 'active' : ''}`}>1. Basic Product Information</div>
+        <div className={`step ${step === 2 ? 'active' : ''}`}>2. Product Specifications</div>
       </div>
-      <button onClick={addProduct} disabled={!isFormValid()}>Add Product</button>
-      <p><span style={{color: 'red'}}>*</span> indicates required field</p>
+
+      {/* Basic Product Info Section */}
+      {step === 1 && (
+        <div className="basic-product-info">
+          {['name', 'description'].map(key => (
+            <div key={key}>
+              <label>{formatLabel(key)}</label>
+              {key === 'description' ? (
+                <textarea
+                  name="description"
+                  placeholder="Description (1-255 characters)"
+                  value={newProduct.description}
+                  onChange={handleInputChange}
+                  onInput={validateDescription}
+                  style={{ borderColor: errors[key] ? 'red' : undefined }}
+                />
+              ) : (
+                <input
+                  type="text"
+                  name={key}
+                  placeholder={formatLabel(key)}
+                  value={newProduct[key]}
+                  onChange={handleInputChange}
+                  style={{ borderColor: errors[key] ? 'red' : undefined }}
+                />
+              )}
+              <div style={{ color: errors[key] ? 'red' : 'grey', fontSize: '12px' }}>
+                {errors[key] || (key === 'weight' ? '1-10,000 grams' : key === 'itemsPerPack' ? '1-500 items' : key === 'name' ? '3-50 characters' : '')}
+              </div>
+            </div>
+          ))}
+          <button onClick={handleNext} disabled={!isStep1Valid()}>Next</button>
+        </div>
+      )}
+
+      {/* Product Specifications Section */}
+      {step === 2 && (
+        <div className="product-specifications">
+          {['weight', 'price', 'itemsPerPack'].map(key => (
+            <div key={key}>
+              <label>{formatLabel(key)}</label>
+              <input
+                type="number"
+                name={key}
+                placeholder={formatLabel(key)}
+                value={newProduct[key]}
+                onChange={handleInputChange}
+                style={{ borderColor: errors[key] ? 'red' : undefined }}
+              />
+              <div style={{ color: errors[key] ? 'red' : 'grey', fontSize: '12px' }}>
+                {errors[key]}
+              </div>
+            </div>
+          ))}
+          <div>
+            <label>Transport Mode</label>
+            <select name="transportMode" value={newProduct.transportMode} onChange={handleInputChange}>
+              <option value="0">Refrigerated</option>
+              <option value="1">Frozen</option>
+              <option value="2">Ambient</option>
+            </select>
+          </div>
+          <button onClick={addProduct} disabled={!isFormValid()}>Add Product</button>
+        </div>
+      )}
+
+      {/* Success Message */}
       {successMessage && <div style={{ color: 'green', marginTop: '10px' }}>{successMessage}</div>}
     </div>
   );

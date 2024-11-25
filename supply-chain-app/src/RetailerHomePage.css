@@ -1,0 +1,191 @@
+/* General Page Styling */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    margin-left: 240px; /* Default margin for larger screens */
+}
+
+/* Retailer Info Section */
+.retailer-info {
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+}
+
+.retailer-info h2 {
+    font-size: 24px;
+    color: #388e3c;
+    margin-bottom: 15px;
+}
+
+.retailer-info p {
+    margin: 5px 0;
+    font-size: 16px;
+    color: #555;
+}
+
+/* Orders Section */
+.orders-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+h2 {
+    color: white;
+}
+
+/* Order Card */
+.order-card {
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    max-width: 20%;
+    width: calc(25% - 20px); /* Adjust for 4 cards per row */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.order-card p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #555;
+}
+
+.order-card .status {
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.order-card .status.waiting {
+    color: #fbc02d;
+}
+
+.order-card .status.accepted {
+    color: #388e3c;
+}
+
+.order-card .status.rejected {
+    color: #d32f2f;
+}
+
+/* Buttons */
+.order-card .actions {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.order-card button {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    flex: 1;
+    margin: 0 5px;
+}
+
+.order-card button:first-of-type {
+    background-color: #388e3c;
+    color: white;
+}
+
+.order-card button:last-of-type {
+    background-color: #d32f2f;
+    color: white;
+}
+
+.order-card button:hover {
+    opacity: 0.9;
+}
+
+/* Footer Section */
+footer {
+    text-align: center;
+    padding: 15px 0;
+    background: #e8f5e9;
+    color: #555;
+    margin-top: 30px;
+    font-size: 14px;
+}
+
+/* Responsive Styles */
+
+/* For screens smaller than 1200px */
+@media (max-width: 1200px) {
+    .container {
+        margin-left: 0; /* Remove left margin for smaller screens */
+        padding: 15px; /* Reduce padding */
+    }
+
+    .order-card {
+        max-width: 45%; /* Two cards per row */
+        width: calc(50% - 20px); /* Adjust for two cards per row */
+    }
+}
+
+/* For tablets and smaller screens */
+@media (max-width: 768px) {
+    .container {
+        margin-left: 0; /* Remove left margin */
+    }
+
+    .order-card {
+        flex: 1 1 calc(50% - 20px); /* Two cards per row */
+        max-width: calc(50% - 20px);
+    }
+
+    .recycler-info h2 {
+        font-size: 20px;
+    }
+
+    .recycler-info p {
+        font-size: 14px;
+    }
+
+    .order-card p {
+        font-size: 12px;
+    }
+
+    .order-card button {
+        font-size: 12px;
+        padding: 6px 12px;
+    }
+}
+
+/* For mobile screens */
+@media (max-width: 480px) {
+    .container {
+        padding: 10px; /* Reduce padding for mobile */
+        margin-left: 0px;
+    }
+
+    .order-card {
+        flex: 1 1 calc(50% - 20px); /* Two cards per row */
+        max-width: calc(50% - 20px);
+    }
+
+    .recycler-info h2 {
+        font-size: 18px;
+    }
+
+    .recycler-info p {
+        font-size: 12px;
+    }
+
+    .order-card p {
+        font-size: 10px;
+    }
+
+    .order-card button {
+        font-size: 10px;
+        padding: 5px 10px;
+    }
+}

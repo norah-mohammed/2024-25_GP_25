@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import getWeb3 from './web3';
 import RoleContract from './contracts/RoleContract.json';
+import './ManufacturerDistributorsPage.css'; // Import the styles
 
 const ManufacturerDistributorsPage = () => {
   const [web3, setWeb3] = useState(null);
@@ -75,10 +76,10 @@ const ManufacturerDistributorsPage = () => {
   if (errorMessage) return <p>{errorMessage}</p>;
 
   return (
-    <div>
+    <div className="distributors-container">
       <h1>Distributors</h1>
       {distributors.length > 0 ? (
-        <table border={1}>
+        <table className="distributors-table">
           <thead>
             <tr>
               <th>Name</th>

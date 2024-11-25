@@ -1,68 +1,39 @@
 /* General Body Styles */
 body {
     font-family: 'Heebo', sans-serif;
-    margin: 0;
-    padding: 0;
+
     background: #f4f4f4;
     color: #333;
 }
 
-/* Navbar Styles */
-.navbar {
-    background-color: #ffffff;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
 
-.navbar-brand { 
-    font-weight: 600;
-    color: #007bff !important;
-}
-
-.navbar-toggler {
-    border: none;
-    outline: none;
-}
-
-.navbar-light .navbar-nav .nav-link {
-    color: #555;
-    cursor: pointer;
-}
-
-.navbar-light .navbar-nav .nav-link:hover {
-    color: #007bff;
-}
-
-.nav-item .nav-link {
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-}
 
 /* Button Styles */
-button {
-    background-color: #007bff;
+/*button {
+    background-color: #43C17A;
     color: #ffffff;
     border: none;
     padding: 8px 16px;
     cursor: pointer;
     border-radius: 4px;
     transition: background-color 0.3s ease;
-}
+}*/
+
 
 button:hover {
-    background-color: #0056b3;
+    background-color: #2e965b;
 }
 
-/* Footer Styles */
+/* Footer Styles 
 footer {
     background-color: #222;
     color: #ddd;
     text-align: center;
     padding: 12px 20px;
     position: fixed;
-    left: 0;
     bottom: 0;
     width: 100%;
-}
+}*/
 
 /* Loading and Error Messages */
 p.loading, p.error {
@@ -80,7 +51,7 @@ a:hover {
     text-decoration: underline;
 }
 
-/* Responsive Layout Adjustments */
+/* Responsive Layout Adjustments 
 @media (max-width: 768px) {
     .navbar {
         flex-direction: column;
@@ -90,7 +61,7 @@ a:hover {
     .nav-item {
         margin: 5px 0;
     }
-}
+}*/
 
 /* Form and Input Styles */
 input[type="text"], input[type="number"], input[type="date"], select {
@@ -103,16 +74,3 @@ input[type="text"], input[type="number"], input[type="date"], select {
     box-sizing: border-box;
 }
 
-/* General Container Padding */
-.container {
-    padding: 20px;
-}
-
-/* Display Utilities */
-.d-none {
-    display: none;
-}
-
-.d-block {
-    display: block;
-}

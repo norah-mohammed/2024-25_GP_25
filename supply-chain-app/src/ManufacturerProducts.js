@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import getWeb3 from './web3';
 import ProductContract from './contracts/ProductContract.json';
+import './ManufacturerProduct.css'; // Import the CSS file
 
 const ManufacturerProducts = ({ manufacturerAddress, onPlaceOrder, goBack }) => {
   const [products, setProducts] = useState([]);
@@ -26,13 +27,7 @@ const ManufacturerProducts = ({ manufacturerAddress, onPlaceOrder, goBack }) => 
           deployedNetwork.address
         );
 
-        console.log(`Fetching products for manufacturer: ${manufacturerAddress}`);
         const manufacturerProducts = await productInstance.methods.getProductsByManufacturer(manufacturerAddress).call();
-        if (manufacturerProducts.length === 0) {
-          console.log('No products found for this manufacturer.');
-        } else {
-          console.log(`${manufacturerProducts.length} products found.`);
-        }
 
         const formattedProducts = manufacturerProducts.map(product => ({
           ...product,
@@ -44,6 +39,7 @@ const ManufacturerProducts = ({ manufacturerAddress, onPlaceOrder, goBack }) => 
           minTemp: parseInt(product.minTemp, 10),
           transportMode: parseInt(product.transportMode, 10),
         }));
+
         setProducts(formattedProducts);
         setFilteredProducts(formattedProducts); // Initially, all products are shown
       } catch (error) {
@@ -81,55 +77,39 @@ const ManufacturerProducts = ({ manufacturerAddress, onPlaceOrder, goBack }) => 
   }
 
   return (
-    <div>
-      <button onClick={goBack}>Back to Manufacturers</button>
-      <h2>Products for Manufacturer</h2>
-      {
-  filteredProducts.length === 0 ? (
-    <p>No products available at the moment.</p>
-  ) : (
-    <table border={1}>
-      <thead>
-        <tr>
-          <th>Product ID</th>
-          <th>Name</th>
-          <th>Description</th>
-          <th>Weight (grams)</th>
-          <th>Items per Pack</th>
-          <th>Price (SAR)</th>
-          <th>Max Temperature (°C)</th>
-          <th>Min Temperature (°C)</th>
-          <th>Transport Mode</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        {filteredProducts.map((product, index) => (
-          <tr key={index}>
-            <td>{product.productId}</td>
-            <td>{product.name}</td>
-            <td>{product.description}</td>
-            <td>{product.weight}</td>
-            <td>{product.itemsPerPack}</td>
-            <td>{product.price}</td>
-            <td>{product.maxTemp}</td>
-            <td>{product.minTemp}</td>
-            <td>{transportModes[product.transportMode]}</td>
-            <td>
-              <button onClick={() => onPlaceOrder(product.productId)}>
+    <div className="manufacturer-products">
+      <button className="back-button" onClick={goBack}>Back to Manufacturers</button>
+      <h2 classname="Mp">Products for Manufacturer</h2>
+      <input
+        type="text"
+        placeholder="Search by Product ID or Name..."
+        value={searchTerm}
+        onChange={handleSearchChange}
+        className="search-input"
+      />
+      {filteredProducts.length === 0 ? (
+        <p>No products available at the moment.</p>
+      ) : (
+        <div className="products-container">
+          {filteredProducts.map((product, index) => (
+            <div key={index} className="product-card">
+              <h3>{product.name}</h3>
+              <p><strong>ID:</strong> {product.productId}</p>
+              <p><strong>Description:</strong> {product.description}</p>
+              <p><strong>Weight:</strong> {product.weight} grams</p>
+              <p><strong>Items per Pack:</strong> {product.itemsPerPack}</p>
+              <p><strong>Price:</strong> {product.price} SAR</p>
+              <p><strong>Temperature Range:</strong> {product.minTemp}°C to {product.maxTemp}°C</p>
+              <p><strong>Transport Mode:</strong> {transportModes[product.transportMode]}</p>
+              <button onClick={() => onPlaceOrder(product.productId)} className="order-button">
                 Order
               </button>
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  )
-}
-
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
 
 export default ManufacturerProducts;
-
