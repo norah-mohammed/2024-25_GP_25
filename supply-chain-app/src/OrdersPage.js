@@ -203,17 +203,18 @@ const OrdersPage = () => {
                     </span>
                   </td>
                   <td>{order.distributorName}</td>
-                  <td>
-                    {order.status === 'Paid' && (
-                      <button onClick={() => handleCreateOrder(order.orderId)}>Prepare Order</button>
-                    )}
-                    {['Preparing for Dispatch', 'Rejected by Distributor'].includes(order.status) && order.status !== 'Rejected by Distributor' && (
-                      <>
-                        <button onClick={() => handleAssignDistributorClick(order)}>Assign Distributor</button>
-                        <button onClick={() => handleCancelOrder(order.orderId)}>Cancel</button>
-                      </>
-                    )}
-                  </td>
+                <td>
+                {order.status === 'Paid' && (
+                  <button onClick={() => handleCreateOrder(order.orderId)}>Prepare Order</button>
+                )}
+                {['Preparing for Dispatch', 'Rejected by Distributor'].includes(order.status) && (
+                  <>
+                    <button onClick={() => handleAssignDistributorClick(order)}>Assign Distributor</button>
+                    <button onClick={() => handleCancelOrder(order.orderId)}>Cancel</button>
+                  </>
+                )}
+              </td>
+
                 </tr>
               ))
             ) : (
