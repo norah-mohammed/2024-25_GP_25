@@ -60,7 +60,6 @@ Farm to Fork platform is a blockchain-based food supply chain management system 
 - **truffle-config.js**: Configuration file for the Truffle project, including blockchain network settings.
 - **package.json**: Contains project dependencies and scripts.
 - **package-lock.json**: Automatically generated file listing exact dependency versions.
-- **client**: Contains client-side code (HTML, CSS, JavaScript).
 
 5. **Compile the Smart Contract**:
     ```bash
