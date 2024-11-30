@@ -4,6 +4,9 @@ import RoleContract from "./contracts/RoleContract.json";
 import OrderContract from "./contracts/OrderContract.json";
 import ProductContract from "./contracts/ProductContract.json";
 import "./ManufacturerHomePage.css"; 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBoxOpen } from '@fortawesome/free-solid-svg-icons';
+
 
 
 const ManufacturerHomePage = () => {
@@ -144,15 +147,14 @@ if (errorMessage) return <p>{errorMessage}</p>;
 
 return (
     <div className="container">
-         
-
+      
+        
         {/* Manufacturer Info Section */}
         <section className="manufacturer-info">
           <h2>{manufacturer.name || "Manufacturer"}</h2>
           <p><strong>Address:</strong> {manufacturer.addressLine || "Not Available"}</p>
           <p><strong>Phone:</strong> {manufacturer.phoneNumber || "Not Available"}</p>
           <p><strong>Email:</strong> {manufacturer.email || "Not Available"}</p>
-          <p><strong>Account:</strong> {manufacturer.ethAddress || "Not Available"}</p>
         </section>
 
  {/* Orders Section */}
@@ -180,7 +182,9 @@ return (
       ))}
     </div>
   ) : (
-    <p className="no-orders-message">No upcoming orders at the moment.</p>
+<p className="no-orders-message">
+  No upcoming orders at the moment. <FontAwesomeIcon icon={faBoxOpen} />
+</p>
   )}
 </section>
 

@@ -1,27 +1,24 @@
 .manufacturer-products {
-  padding: 20px;
-  font-family: Arial, sans-serif;
+  margin-top: 0;
+  padding: 0 20px;
+  font-family: 'Poppins', sans-serif;
   margin-left: 240px;
+
 }
 
-.back-button {
-  background-color: #43C17A;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-bottom: 20px;
+.manufacturer-products .loaded {
+  transition: margin-left 0.3s ease; /* Only applies after the page has loaded */
+}
+.sidebar-closed .manufacturer-products   {
+  margin-left: 60px;
 }
 
-.back-button:hover {
-  background-color: #0056b3;
-}
+
 
 .Mp h2 {
-  text-align: center;
+  text-align: left;
   margin-bottom: 20px;
-  color: #333;
+  color: #000000;
 }
 
 .search-input {
@@ -37,23 +34,23 @@
 
 .products-container {
   display: flex;
-  flex-wrap: wrap; /* Allow wrapping of items */
-  gap: 20px; /* Spacing between cards */
-  justify-content: flex-start; /* Align items to the left */
-  margin-top: 20px; /* Add some spacing from the heading */
+  flex-wrap: wrap; 
+  gap: 20px; 
+  justify-content: flex-start; 
+  margin-top: 20px; 
 }
 
 .product-card {
   background-color: white;
   border-radius: 10px;
   padding: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for card */
-  flex: 1 1 calc(33.333% - 20px); /* Three cards per row with gaps */
-  max-width: calc(33.333% - 20px); /* Ensure proper width for three cards */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+  flex: 1 1 calc(33.333% - 20px); 
+  max-width: calc(33.333% - 20px); 
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  box-sizing: border-box; /* Include padding and border in width calculation */
+  box-sizing: border-box; 
 }
 
 .product-card h3 {
@@ -65,6 +62,43 @@
   margin: 5px 0;
   font-size: 14px;
   color: #555;
+}
+.search-bar-container {
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  background-color: #ffffff; 
+  border-radius: 30px; 
+  border: 2px solid #ffffff; 
+  padding: 2px 15px; 
+  width: 400px; 
+  margin: 20px auto; 
+}
+
+.search-bar-container input.search-bar {
+  border: none; 
+  outline: none; 
+  font-size: 16px; 
+  color: #6c757d; 
+  flex-grow: 1; 
+  margin: 1px 20px;
+}
+
+.search-bar-container input::placeholder {
+  color: #6c757d; 
+}
+
+.search-bar-container .search-icon {
+  color: #349256;
+  font-size: 20px; 
+  margin-right: 10px; 
+}
+
+.search-bar-container .clear-icon {
+  color: #349256; 
+  font-size: 20px; 
+  cursor: pointer; 
+  margin-left: 10px; 
 }
 
 .order-button {
@@ -79,11 +113,4 @@
 
 .order-button:hover {
   background-color: rgb(63, 149, 68);
-}
-@media (max-width: 768px) {
-  
-  .manufacturer-products {
-      margin-left: 0; /* Remove left margin */
-  }
-
 }

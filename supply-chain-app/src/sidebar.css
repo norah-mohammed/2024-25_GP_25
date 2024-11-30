@@ -1,7 +1,14 @@
-/* Sidebar Styles */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+body {
+    
+    font-family: 'Poppins', sans-serif;
+    background: #f4f4f4;
+    color: #333;
+}/* Sidebar Styles */
 .sidebar {
     width: 240px;
-    background-color: #43C17A;
+    background-color: #13a947;
     height: 100vh;
     color: white;
     display: flex;
@@ -14,6 +21,35 @@
     border-radius: 0 25px 25px 0;
     transition: transform 0.3s ease-in-out, width 0.3s ease-in-out;
     z-index: 1000;
+}
+.hide-breadcrumb .breadcrumb {
+    display: none;
+  }
+  
+.breadcrumb{
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    padding: 10px 20px;
+    background-color: #f9f9f9;
+    border-bottom: 1px solid #ddd;
+}
+.breadcrumb-link {
+    color: #000000;
+}
+
+.breadcrumb-link  {
+    color: #000000;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.breadcrumb-link:hover {
+    color: #2a802f;
+}
+
+.breadcrumb-link:last-child {
+    color: #2a802f; /* Green for the current page */
 }
 .notification {
     background-color: #d4edda;
@@ -81,7 +117,7 @@
 /* Sidebar Styles */
 .sidebar {
     width: 240px;
-    background-color: #43C17A;
+    background-color: #13a947;
     height: 100vh;
     color: white;
     display: flex;
@@ -106,19 +142,32 @@
     transform: translateX(0); /* Move sidebar into view */
 }
 
-/* Hamburger Menu */
+/* Ensure the hamburger menu is always visible */
 .hamburger-menu {
-    display: none;
-    position: fixed;
-    top: 15px;
-    left: 15px;
-    z-index: 1100;
-    font-size: 24px;
-    background-color: transparent;
-    border: none;
-    color: #ffffff;
-    cursor: pointer;
+    position: fixed; /* Fixes the button to always be on screen */
+    top: 15px; /* Adjust distance from the top of the viewport */
+    left: 15px; /* Adjust distance from the left of the viewport */
+    z-index: 1100; /* Ensure it stays on top of all other elements */
+    font-size: 24px; /* Consistent button size */
+    background-color: transparent; /* No background */
+    border: none; /* Remove border */
+    color: #ffffff; /* White color for visibility */
+    cursor: pointer; /* Pointer cursor for interactivity */
 }
+
+/* Ensure it's always visible on all screen sizes */
+@media (max-width: 768px) {
+    .hamburger-menu {
+        display: block; /* Always displayed even in smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .hamburger-menu {
+        display: block; /* Always displayed even in very small screens */
+    }
+}
+
 
 /* Sidebar Navigation */
 .sidebar-nav {
@@ -138,7 +187,7 @@
     margin-bottom: 10px;
     color: white;
     text-decoration: none;
-    font-size: 1rem;
+    font-size: 0.8rem;
     border-radius: 15px;
     transition: background-color 0.3s, color 0.3s;
 }
@@ -156,7 +205,7 @@
 
 /* Icon size adjustment */
 .nav-icon {
-    font-size: 24px;
+    font-size: 20px;
 }
 
 /* Sidebar Header */
@@ -206,10 +255,25 @@
 }
 
 body{
-    background: linear-gradient(to right, #43C17A, #A7D8A9); /* Green fading effect */
-
+    background-color: #f9f9f9;
+    
 }
-
+.page-content {
+    margin-left: 240px; /* Matches sidebar width */
+    padding: 20px;
+    transition: margin-left 0.3s ease; /* Adjusts for sidebar open/close */
+  }
+  
+  .sidebar.closed + .page-content {
+    margin-left: 60px; /* Adjust margin when sidebar is closed */
+  }
+  
+  @media (max-width: 768px) {
+    .page-content {
+      margin-left: 60px; /* Reduced margin for smaller screens */
+    }
+  }
+  
 
 p{
     align-items: left;

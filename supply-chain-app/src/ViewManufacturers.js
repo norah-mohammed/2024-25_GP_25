@@ -2,13 +2,18 @@ import React, { useState, useEffect, useCallback } from 'react';
 import getWeb3 from './web3';
 import RoleContract from './contracts/RoleContract.json';
 import "./ViewManufacturers.css";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch, faTimes } from '@fortawesome/free-solid-svg-icons';
+
 
 const ViewManufacturers = ({ onViewProducts }) => {
   const [manufacturers, setManufacturers] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState(''); // Maintain the search term for UI only
   const [errorMessage, setErrorMessage] = useState('');
   const [isRetailer, setIsRetailer] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [isLoaded, setIsLoaded] = useState(false);
+
 
   const fetchManufacturers = useCallback(async (roleInstance) => {
     try {
@@ -33,6 +38,7 @@ const ViewManufacturers = ({ onViewProducts }) => {
         const accounts = await web3.eth.getAccounts();
         const networkId = await web3.eth.net.getId();
         const deployedNetwork = RoleContract.networks[networkId];
+        setTimeout(() => setIsLoaded(true), 50); 
 
         if (!deployedNetwork) {
           throw new Error('RoleContract not deployed on the selected network');
@@ -59,32 +65,35 @@ const ViewManufacturers = ({ onViewProducts }) => {
   }, [fetchManufacturers]);
 
   const handleSearchChange = (e) => {
-    const value = e.target.value;
-    setSearchTerm(value);
-    if (!value) {
-      setManufacturers(manufacturers);
-    } else {
-      const filtered = manufacturers.filter(manufacturer =>
-        manufacturer.name.toLowerCase().includes(value.toLowerCase())
-      );
-      setManufacturers(filtered);
-    }
+    setSearchTerm(e.target.value); // Update search term for UI purposes
   };
 
   if (loading) return <div>Loading...</div>;
   if (!isRetailer) return <div><h2>{errorMessage}</h2></div>;
 
   return (
-    <div className="view-manufacturers-container">
-      <h2 className="page-title">Available Manufacturers</h2>
+<div className={`view-manufacturers-container ${isLoaded ? "loaded" : ""}`}>    
+    <h2 className="page-title">Available Manufacturers</h2>
       {errorMessage && <p className="error-message">{errorMessage}</p>}
-      <input
-        className="search-bar"
-        type="text"
-        placeholder="Search manufacturers..."
-        value={searchTerm}
-        onChange={handleSearchChange}
-      />
+      <div className="search-bar-container">
+        <FontAwesomeIcon icon={faSearch} className="search-icon" />
+        <input
+          className="search-bar"
+          type="text"
+          placeholder="Search manufacturers..."
+          value={searchTerm}
+          onChange={handleSearchChange} // Update the search term, no filtering applied
+          disabled // Disable functionality if needed
+        />
+        {searchTerm && (
+          <FontAwesomeIcon
+            icon={faTimes} // FontAwesome clear icon
+            className="clear-icon"
+            onClick={() => setSearchTerm('')} // Clear the search term
+          />
+        )}
+      </div>
+
       <div className="manufacturer-cards">
         {manufacturers.length === 0 ? (
           <p className="no-manufacturers">No manufacturers found.</p>

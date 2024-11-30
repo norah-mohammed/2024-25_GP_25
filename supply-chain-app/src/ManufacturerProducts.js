@@ -2,13 +2,15 @@ import React, { useState, useEffect } from 'react';
 import getWeb3 from './web3';
 import ProductContract from './contracts/ProductContract.json';
 import './ManufacturerProduct.css'; // Import the CSS file
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft, faSearch, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 const ManufacturerProducts = ({ manufacturerAddress, onPlaceOrder, goBack }) => {
   const [products, setProducts] = useState([]);
-  const [filteredProducts, setFilteredProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
+  const [isLoaded, setIsLoaded] = useState(false);
 
   const transportModes = ['Refrigerated', 'Frozen', 'Ambient'];
 
@@ -28,6 +30,7 @@ const ManufacturerProducts = ({ manufacturerAddress, onPlaceOrder, goBack }) => 
         );
 
         const manufacturerProducts = await productInstance.methods.getProductsByManufacturer(manufacturerAddress).call();
+        setTimeout(() => setIsLoaded(true), 50); 
 
         const formattedProducts = manufacturerProducts.map(product => ({
           ...product,
@@ -41,7 +44,6 @@ const ManufacturerProducts = ({ manufacturerAddress, onPlaceOrder, goBack }) => 
         }));
 
         setProducts(formattedProducts);
-        setFilteredProducts(formattedProducts); // Initially, all products are shown
       } catch (error) {
         setErrorMessage(`Error fetching products: ${error.message}`);
         console.error(error);
@@ -55,17 +57,12 @@ const ManufacturerProducts = ({ manufacturerAddress, onPlaceOrder, goBack }) => 
     }
   }, [manufacturerAddress]);
 
-  useEffect(() => {
-    const lowercasedFilter = searchTerm.toLowerCase();
-    const filteredData = products.filter(product =>
-      product.productId.toString().includes(lowercasedFilter) ||
-      product.name.toLowerCase().includes(lowercasedFilter)
-    );
-    setFilteredProducts(filteredData);
-  }, [searchTerm, products]);
-
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
+  };
+
+  const navigateToViewManufacturers = () => {
+    goBack(); // This navigates back to the manufacturers view
   };
 
   if (loading) {
@@ -77,21 +74,56 @@ const ManufacturerProducts = ({ manufacturerAddress, onPlaceOrder, goBack }) => 
   }
 
   return (
-    <div className="manufacturer-products">
-      <button className="back-button" onClick={goBack}>Back to Manufacturers</button>
-      <h2 classname="Mp">Products for Manufacturer</h2>
-      <input
-        type="text"
-        placeholder="Search by Product ID or Name..."
-        value={searchTerm}
-        onChange={handleSearchChange}
-        className="search-input"
-      />
-      {filteredProducts.length === 0 ? (
+    <div className={`manufacturer-products ${isLoaded ? "loaded" : ""}`}>
+      {/* Breadcrumb with Navigation */}
+      <div className="breadcrumb">
+      <span
+          className="breadcrumb-link"
+          onClick={navigateToViewManufacturers}
+          style={{ cursor: 'pointer' }}
+        >
+          Home
+        </span>&nbsp;&gt;&nbsp;
+        <span
+          className="breadcrumb-link"
+          onClick={navigateToViewManufacturers}
+          style={{ cursor: 'pointer' }}
+        >
+          View Manufacturers
+        </span>
+        &nbsp;&gt;&nbsp;
+        <span className="breadcrumb-link">Manufacturer Products</span>
+      </div>
+
+      <button className="back-button" onClick={goBack}>
+        <FontAwesomeIcon icon={faArrowLeft} /> Back
+      </button>
+
+      <h2 className="Mp">Products for Manufacturer</h2>
+
+      <div className="search-bar-container">
+        <FontAwesomeIcon icon={faSearch} className="search-icon" />
+        <input
+          className="search-bar"
+          type="text"
+          placeholder="Search Products by ID or Name..."
+          value={searchTerm}
+          onChange={handleSearchChange}
+        />
+        {searchTerm && (
+          <FontAwesomeIcon
+            icon={faTimes}
+            className="clear-icon"
+            onClick={() => setSearchTerm('')}
+          />
+        )}
+      </div>
+
+      {products.length === 0 ? (
         <p>No products available at the moment.</p>
       ) : (
         <div className="products-container">
-          {filteredProducts.map((product, index) => (
+          {products.map((product, index) => (
             <div key={index} className="product-card">
               <h3>{product.name}</h3>
               <p><strong>ID:</strong> {product.productId}</p>

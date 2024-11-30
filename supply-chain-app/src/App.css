@@ -1,76 +1,25 @@
-/* General Body Styles */
-body {
-    font-family: 'Heebo', sans-serif;
-
-    background: #f4f4f4;
-    color: #333;
-}
-
-
-
-/* Button Styles */
-/*button {
-    background-color: #43C17A;
-    color: #ffffff;
-    border: none;
-    padding: 8px 16px;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: background-color 0.3s ease;
-}*/
-
-
-button:hover {
-    background-color: #2e965b;
-}
-
-/* Footer Styles 
-footer {
-    background-color: #222;
-    color: #ddd;
-    text-align: center;
-    padding: 12px 20px;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-}*/
-
-/* Loading and Error Messages */
-p.loading, p.error {
-    text-align: center;
+html, body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .app-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  .content-container {
+    flex: 1; /* Pushes the footer to the bottom */
     padding: 20px;
-}
-
-/* Custom Link Styling */
-a {
-    color: #007bff;
-    text-decoration: none;
-}
-
-a:hover {
-    text-decoration: underline;
-}
-
-/* Responsive Layout Adjustments 
-@media (max-width: 768px) {
-    .navbar {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .nav-item {
-        margin: 5px 0;
-    }
-}*/
-
-/* Form and Input Styles */
-input[type="text"], input[type="number"], input[type="date"], select {
-    width: 100%;
-    padding: 8px;
-    margin: 10px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
-
+  }
+  
+  .footer {
+    background-color: #f8f8f8;
+    text-align: center;
+    padding: 10px 0;
+    border-top: 1px solid #ddd;
+  }
+  

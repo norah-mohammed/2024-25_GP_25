@@ -1,15 +1,16 @@
 /* Body background with a light gradient effect */
 
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-  margin-left: 240px; /* Adjust for the sidebar width */
 
+/* For container */
+.container {
+  margin-left: 240px;
+  transition: margin-left 0.3s ease;
 }
-h2{
-  color: white;
+
+.sidebar-closed .container {
+  margin-left: 60px;
 }
+
 /* Manufacturer Info Styling */
 .manufacturer-info {
   background-color: white;
@@ -43,6 +44,9 @@ h2{
   justify-content: flex-start; /* Align items to the left */
   margin-top: 20px; /* Add some spacing from the heading */
 }
+.orders-sectionM h2{
+  color: #000000;
+}
 
 /* Individual Order Card */
 .order-cardM {
@@ -60,9 +64,20 @@ h2{
 .no-orders-message {
   font-size: 16px;
   color: #555; /* Subtle gray text */
-  margin-top: 20px; /* Add spacing from the heading */
+  margin-top: 20px;
   font-weight: bold;
+  display: flex; /* Allows alignment with the icon */
+  align-items: left;
+  justify-content: left;
 }
+
+.no-orders-message svg {
+  margin-left: 10px;
+  color: #919191; /* Green for success */
+  font-size: 18px; /* Slightly larger than the text */
+}
+
+
 
 
 /* Adjust card width for smaller screens */

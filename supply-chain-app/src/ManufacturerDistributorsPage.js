@@ -77,7 +77,7 @@ const ManufacturerDistributorsPage = () => {
 
   return (
     <div className="distributors-container">
-      <h1>Distributors</h1>
+      <h2>Distributors</h2>
       {distributors.length > 0 ? (
         <table className="distributors-table">
           <thead>

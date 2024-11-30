@@ -1,15 +1,39 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars, faHouse, faBox, faClipboardList, faTruck } from '@fortawesome/free-solid-svg-icons'; // Import faTruck and faBars
+import { faBars, faHouse, faBox, faClipboardList, faTruck } from '@fortawesome/free-solid-svg-icons';
 import './sidebar.css';
+import Breadcrumb from './Breadcrumb'; // Import the Breadcrumb component
 import logo from './images/only-logo.png';
 
 const Sidebar = ({ role, currentPage, setCurrentPage }) => {
-    const [sidebarOpen, setSidebarOpen] = useState(true); // Set sidebar to be open by default
+    console.log("Current Page in Sidebar:", currentPage);
+
+    const [sidebarOpen, setSidebarOpen] = useState(true);
+
+    useEffect(() => {
+        // Add or remove a class on the <body> based on sidebar state
+        document.body.classList.toggle('sidebar-closed', !sidebarOpen);
+    }, [sidebarOpen]);
+
+    // Handle breadcrumb visibility
+    const hiddenBreadcrumbPages = ["AddProduct", "viewManufacturers", "manufacturerProduct", "placeOrder"];
+    const showBreadcrumb = !hiddenBreadcrumbPages.includes(currentPage);
+
+    // Control sidebar based on the current page
+    useEffect(() => {
+        if (currentPage === 'nonUserPage') {
+            setSidebarOpen(false); // Automatically close the sidebar for non-user pages
+        }
+    }, [currentPage]);
 
     const toggleSidebar = () => {
-        setSidebarOpen(!sidebarOpen); // Toggle the sidebar open/close state
+        setSidebarOpen((prev) => !prev);
     };
+
+    const isNonUserPage = currentPage === 'nonUserPage';
+    if (isNonUserPage) {
+        return null; // Don't render the sidebar for non-user pages
+    }
 
     return (
         <>
@@ -18,6 +42,7 @@ const Sidebar = ({ role, currentPage, setCurrentPage }) => {
                 <FontAwesomeIcon icon={faBars} />
             </button>
 
+            {/* Sidebar */}
             <aside className={`sidebar ${sidebarOpen ? 'open' : 'closed'}`}>
                 <div className="sidebar-header">
                     <img src={logo} alt="Farm To Fork" className="logo" />
@@ -27,11 +52,11 @@ const Sidebar = ({ role, currentPage, setCurrentPage }) => {
                     {role === 'manufacturer' && (
                         <>
                             <a
-                                href="#home"
+                                href="#dashboard"
                                 onClick={() => setCurrentPage('manufacturerHomePage')}
                                 className={`nav-item ${currentPage === 'manufacturerHomePage' ? 'active' : ''}`}
                             >
-                                <FontAwesomeIcon icon={faHouse} className="nav-icon" /> Home
+                                <FontAwesomeIcon icon={faHouse} className="nav-icon" /> Dashboard
                             </a>
                             <a
                                 href="#products"
@@ -59,11 +84,11 @@ const Sidebar = ({ role, currentPage, setCurrentPage }) => {
                     {role === 'retailer' && (
                         <>
                             <a
-                                href="#home"
+                                href="#dashboard"
                                 onClick={() => setCurrentPage('retailerHomePage')}
                                 className={`nav-item ${currentPage === 'retailerHomePage' ? 'active' : ''}`}
                             >
-                                <FontAwesomeIcon icon={faHouse} className="nav-icon" /> Home
+                                <FontAwesomeIcon icon={faHouse} className="nav-icon" /> Dashboard
                             </a>
                             <a
                                 href="#viewManufacturers"
@@ -77,11 +102,11 @@ const Sidebar = ({ role, currentPage, setCurrentPage }) => {
                     {role === 'distributor' && (
                         <>
                             <a
-                                href="#home"
+                                href="#dashboard"
                                 onClick={() => setCurrentPage('distributorHomePage')}
                                 className={`nav-item ${currentPage === 'distributorHomePage' ? 'active' : ''}`}
                             >
-                                <FontAwesomeIcon icon={faHouse} className="nav-icon" /> Home
+                                <FontAwesomeIcon icon={faHouse} className="nav-icon" /> Dashboard
                             </a>
                             <a
                                 href="#orders"
@@ -94,6 +119,13 @@ const Sidebar = ({ role, currentPage, setCurrentPage }) => {
                     )}
                 </nav>
             </aside>
+
+            {/* Breadcrumb */}
+            <div className="page-content">
+                {showBreadcrumb && (
+                    <Breadcrumb currentPage={currentPage} setCurrentPage={setCurrentPage} />
+                )}
+            </div>
         </>
     );
 };

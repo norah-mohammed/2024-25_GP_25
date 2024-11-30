@@ -1,9 +1,16 @@
 /* General container for the page */
 .manufacturer-dashboard {
-  padding: 20px;
+  margin-top: 0;
+  padding: 0 20px;
   display: flex;
   flex-direction: column;
-  margin-left: 240px; /* Adjust for the sidebar width */
+  font-family: 'Poppins', sans-serif;
+  margin-left: 240px;
+  transition: margin-left 0.3s ease; /* Transition for sidebar open/close */
+}
+
+.sidebar-closed .manufacturer-dashboard {
+  margin-left: 60px;
 }
 
 /* Heading styles */
@@ -11,12 +18,8 @@
   font-size: 1.8rem;
   font-weight: 600;
   margin-bottom: 20px;
-  color: #333; /* Dark color for the heading */
+  color: #000000; /* White color for headings */
 }
-.manufacturer-dashboard h2{
-  color: #fff;
-}
-/* General container for the page */
 
 /* Table Styles */
 .manufacturer-dashboard table {
@@ -24,24 +27,22 @@
   border-collapse: separate;
   border-spacing: 0 10px; /* Spacing between rows for card effect */
   margin-top: 15px;
-  background-color: transparent;
-  border: none; /* Remove border around the table */
-  /* Ensure no overflow for proper border radius rendering */
   overflow: hidden;
   border-radius: 10px; /* Apply border-radius for overall table effect */
-  background-color: #ffffff; /* Match background to header */
+  background-color: #ffffff; /* White background for the table */
+  border: none; /* Remove table borders */
 }
 
 /* Table Header */
 .manufacturer-dashboard table th {
   text-align: left;
-  padding: 12px 15px; /* Adjusted padding */
+  padding: 12px 15px;
   font-size: 0.8rem;
   color: #6c757d; /* Subtle gray for header text */
   font-weight: bold;
   text-transform: capitalize;
   background-color: #ffffff; /* White background for header */
-  border: none; /* Ensure no borders in the header */
+  border: none;
 }
 
 /* Add border-radius for the first and last <th> */
@@ -53,51 +54,34 @@
   border-top-right-radius: 10px; /* Rounded top-right corner */
 }
 
-
 /* Table Rows (Card Style) */
 .manufacturer-dashboard table tr {
   background-color: #ffffff; /* White background for rows */
-  border-radius: 12px; /* Rounded corners for row */
+  border-radius: 12px; /* Rounded corners for rows */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for rows */
-  overflow: hidden;
   display: table-row;
-  border: none; /* Remove borders between rows */
+  border: none;
 }
 
 /* Table Cells */
 .manufacturer-dashboard table td {
-  padding: 12px 15px; /* Adjusted padding */
-  font-size: 0.85rem; /* Adjusted font size */
+  padding: 12px 10px;
+  font-size: 0.7rem;
   color: #333; /* Standard dark text */
   vertical-align: middle;
-  border: none; /* Remove borders between cells */
+  border: none;
 }
-
-
-/* Table Cells */
-.manufacturer-dashboard table td {
-  padding: 12px 15px; /* Adjusted padding */
-  font-size: 0.85rem; /* Adjusted font size */
-  color: #333; /* Standard dark text */
-  vertical-align: middle;
-  border: none; /* No border between cells */
-}
-
-/* Hover Effect */
-.manufacturer-dashboard table tr:hover {
-  background-color: #f1f3f5; /* Subtle gray hover */
-  transition: background-color 0.3s ease-in-out;
-}
-
-
-
-
 
 /* Center Content in Table Cells */
-table td,
+
 table th {
   text-align: center;
 }
+table td{
+  text-align: left;
+
+}
+
 
 /* Row Alternation (Optional) */
 table tr:nth-child(even) {
@@ -113,7 +97,6 @@ button {
   cursor: pointer;
   font-size: 1rem;
   border-radius: 8px;
-  transition: background-color 0.3s ease;
   margin-bottom: 20px;
 }
 
@@ -121,49 +104,92 @@ button:hover {
   background-color: #2b7f48; /* Slightly darker green */
 }
 
-.status.in-stock {
-  background-color: #d4f5e9; /* Soft green */
-  color: #28a745; /* Dark green */
+/* Table Cells */
+table td {
+  padding: 12px 12px; /* Adjusted padding */
+  font-size: 0.7rem; /* Adjusted font size */
+  color: #333; /* Standard dark text */
+  vertical-align: middle;
+  border: none; /* Remove borders between cells */
+  text-align: left;
+
 }
+
+
+/* Table Cells */
+.table td {
+  padding: 12px 2px; /* Adjusted padding */
+  font-size: 0.7rem; /* Adjusted font size */
+  color: #333; /* Standard dark text */
+  vertical-align: left;
+  border: none; /* No border between cells */
+  text-align: center;
+
+}
+
+/* Status Styling */
+.status {
+  display: flex;
+  align-items: left; 
+  gap: 3px; 
+  font-size: 0.7rem; 
+  text-transform: capitalize; 
+  color: #000;
+}
+
+/* Circle Styling */
+.status::before {
+  content: "";
+  display: inline-block;
+  width: 10px; 
+  height: 10px; 
+  border-radius: 50%; 
+  background-color: var(--circle-color); 
+}
+
+/* Status Colors */
+.status.in-stock {
+  --circle-color: #28a745; 
+}
+
 
 .out-of-stock {
   display: inline-block;
   padding: 5px 10px;
   border-radius: 20px;
-  background-color: #F44336; /* Red for Out of Stock */
-  color: white;
+  background-color: #F44336; 
   font-size: 0.875em;
   text-align: center;
   text-transform: uppercase;
 }
+
 .button-group {
   display: flex;
-  justify-content: space-between; /* Space between Add Product and Search */
-  align-items: center; /* Center vertically */
-  margin-bottom: 20px; /* Space below the group */
-  gap: 10px; /* Space between the elements */
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 10px;
 }
 
 .add-product-btn {
-  background-color: #ffff;
-  color: #43C17A;
-  padding: 12px 30px;
-  font-size: 1rem;
+  background-color: #349256;
+  color: #ffffff;
+  padding: 10px 20px;
+  font-size: 0.9rem;
   border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-  border: 1px #3cad6d solid;
+  border: 1px #349256 solid;
 }
 
 .add-product-btn:hover {
-  background-color: #2b7f48;
-  color: white;
+  background-color: #ffffff;
+  color: #2b7f48;
 }
 
 .search-bar-container {
   display: flex;
   align-items: center;
-  gap: 5px; /* Space between the search bar and button */
+  gap: 5px;
 }
 
 .search-bar {
@@ -182,17 +208,4 @@ button:hover {
   padding: 10px 16px;
   border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.search-btn:hover {
-  background-color: #2b7f48;
-}
-
-/* Media Queries for Responsiveness */
-@media (max-width: 768px) {
-  .manufacturer-dashboard {
-  
-      margin-left: 0; /* Remove margin when sidebar is hidden */
-    }
 }

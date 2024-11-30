@@ -4,6 +4,8 @@ import RoleContract from './contracts/RoleContract.json';
 import OrderContract from './contracts/OrderContract.json';
 import ProductContract from './contracts/ProductContract.json';
 import './RetailerHomePage.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBoxOpen } from '@fortawesome/free-solid-svg-icons';
 
 const RetailerHomePage = () => {
     const [web3, setWeb3] = useState(null);
@@ -72,6 +74,7 @@ const RetailerHomePage = () => {
                 name: details.name,
                 address: details.physicalAddress,
                 email: details.email,
+                phone: details.phoneNumber,
             });
         } catch (error) {
             console.error("Error fetching retailer details:", error);
@@ -157,7 +160,7 @@ const RetailerHomePage = () => {
             <div className="retailer-info">
                 <h2>{retailer.name}</h2>
                 <p><strong>Address:</strong> {retailer.address}</p>
-                <p><strong>Phone:</strong> {retailer.phoneNumber}</p>
+                <p><strong>Phone:</strong> {retailer.phone}</p>
                 <p><strong>Email:</strong> {retailer.email}</p>
             </div>
 
@@ -181,7 +184,9 @@ const RetailerHomePage = () => {
                         </div>
                     ))
                 ) : (
-                    <p>No orders awaiting payment.</p>
+                    <p className="no-orders-message">
+                    No orders awaiting payment at the moment.<FontAwesomeIcon icon={faBoxOpen} />
+                    </p>
                 )}
             </div>
 
@@ -202,7 +207,9 @@ const RetailerHomePage = () => {
                         </div>
                     ))
                 ) : (
-                    <p>No delivered orders available.</p>
+                    <p className="no-orders-message">
+                No delivered orders at the moment.<FontAwesomeIcon icon={faBoxOpen} />
+                </p>
                 )}
             </div>
         </div>

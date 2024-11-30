@@ -168,7 +168,7 @@ const OrdersPage = () => {
 
   return (
     <div className="ordersSection">
-      <h1>Orders</h1>
+      <h2>Orders</h2>
       {notification && <div className="notification">{notification}</div>}
       {loading ? (
         <p>Loading orders...</p>
@@ -194,7 +194,7 @@ const OrdersPage = () => {
                   <td>{parseInt(order.orderId)}</td>
                   <td>{parseInt(order.productId)}</td>
                   <td>{parseInt(order.quantity)}</td>
-                  <td>{order.deliveryInfo.deliveryDate}</td>
+                  <td style={{ whiteSpace: 'nowrap' }}>{order.deliveryInfo.deliveryDate}</td>
                   <td>{order.deliveryInfo.deliveryTime}</td>
                   <td>{order.deliveryInfo.shippingAddress}</td>
                   <td>
@@ -204,16 +204,35 @@ const OrdersPage = () => {
                   </td>
                   <td>{order.distributorName}</td>
                   <td>
-                    {order.status === 'Paid' && (
-                      <button onClick={() => handleCreateOrder(order.orderId)}>Prepare Order</button>
-                    )}
-                    {['Preparing for Dispatch', 'Rejected by Distributor'].includes(order.status) && order.status !== 'Rejected by Distributor' && (
-                      <>
-                        <button onClick={() => handleAssignDistributorClick(order)}>Assign Distributor</button>
-                        <button onClick={() => handleCancelOrder(order.orderId)}>Cancel</button>
-                      </>
-                    )}
-                  </td>
+  {order.status === 'Paid' && (
+    <button
+      onClick={() => handleCreateOrder(order.orderId)}
+    >
+      Prepare Order
+    </button>
+  )}
+  {['Preparing for Dispatch', 'Rejected by Distributor'].includes(order.status) && (
+    <>
+      <button
+        onClick={() => handleAssignDistributorClick(order)}
+      >
+        Assign Distributor
+      </button>
+      <button
+        onClick={() => {
+          {
+            handleCancelOrder(order.orderId);
+          }
+        }}
+      >
+        Cancel
+      </button>
+    </>
+  )}
+</td>
+
+
+
                 </tr>
               ))
             ) : (
@@ -225,20 +244,25 @@ const OrdersPage = () => {
         </table>
       )}
 
-      {showPopup && (
-        <div ref={selectDistributorRef} className="popup">
-          <h2>Select Distributor</h2>
-          <ul>
-            {distributors.map((distributor) => (
-              <li key={distributor.ethAddress}>
-                {distributor.name}
-                <button onClick={() => handleAssignDistributor(distributor.ethAddress)}>Select</button>
-              </li>
-            ))}
-          </ul>
-          <button className="close-button" onClick={() => setShowPopup(false)}>Close</button>
-        </div>
-      )}
+{showPopup && (
+  <div ref={selectDistributorRef} className="popup">
+    <h2>Select Distributor</h2>
+    {distributors.length > 0 ? (
+      <ul>
+        {distributors.map((distributor) => (
+          <li key={distributor.ethAddress}>
+            {distributor.name}
+            <button onClick={() => handleAssignDistributor(distributor.ethAddress)}>Select</button>
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <p>No distributors available for the selected order.</p> // Message when the list is empty
+    )}
+    <button className="close-button" onClick={() => setShowPopup(false)}>Close</button>
+  </div>
+)}
+
     </div>
   );
 };

@@ -77,16 +77,25 @@ contract OrderContract {
         emit OrderStatusUpdated(_orderId, _newStatus);
     }
 
-    // Function to assign a distributor to an order
-    function assignDistributor(uint _orderId, address _distributor) public {
+   function assignDistributor(uint _orderId, address _distributor) public {
         require(_orderId > 0 && _orderId <= orderCounter, "Order does not exist.");
         Order storage order = orders[_orderId - 1];
-        require(keccak256(abi.encodePacked(order.status)) == keccak256(abi.encodePacked("Preparing for Dispatch")), "Order is not ready for dispatch.");
+
+        // Allow assigning a distributor for specific statuses
+        require(
+            keccak256(abi.encodePacked(order.status)) == keccak256(abi.encodePacked("Preparing for Dispatch")) ||
+            keccak256(abi.encodePacked(order.status)) == keccak256(abi.encodePacked("Rejected by Distributor")),
+            "Order is not in a valid status for distributor assignment."
+        );
+
+        require(_distributor != address(0), "Invalid distributor address.");
         order.distributor = _distributor;
         order.status = "Dispatched";
         order.orderHistory = string(abi.encodePacked(order.orderHistory, " | Assigned to distributor: ", toAsciiString(_distributor)));
+        
         emit DistributorAssigned(_orderId, _distributor);
     }
+
 
     // Function to cancel an order
     function cancelOrder(uint _orderId) public {

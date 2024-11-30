@@ -1,22 +1,71 @@
 /* PlaceOrder.css */
+.back-title-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  margin-left: 260px;
+  margin-top: 0px;
+  transition: margin-left 0.3s ease; /* Transition for sidebar open/close */
+
+}
+.place-order-container {
+ 
+  transition: margin-left 0.3s ease; /* Transition for sidebar open/close */
+
+}
+.place-order-container .breadcrumb {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  padding: 10px 20px;
+  background-color: #f9f9f9;
+  border-bottom: 1px solid #ddd;
+  transition: margin-left 0.3s ease; /* Transition for sidebar open/close */
+  margin-left: 240px;
+}
+
+.place-order-container.breadcrumb-link {
+  color: #000000;
+  text-decoration: none;
+  transition: color 0.2s ease;
+  cursor: pointer;
+}
+
+.place-order-container .breadcrumb-link:hover {
+  color: #2a802f;
+}
+
+.place-order-container .breadcrumb-current {
+  color: #2a802f; /* Green for the current page */
+}
+
+
+.sidebar-closed .place-order-form, .sidebar-closed  .breadcrumb{
+  margin-left: 60px;
+}
+
+.place-order-title {
+  color: #000;
+}
 
 .place-order-form {
     display: flex;
     justify-content: space-between;
     max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f4f4f4;
+    margin-top: 10px;
+    background-color: #f5f5f5;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-left: 240px;
+    margin-left: 300px;
+    transition: margin-left 0.3s ease; /* Transition for sidebar open/close */
+
   }
   
   .product-info {
     width: 40%; /* Take up 40% of the form's width */
     padding: 20px;
     border-radius: 8px;
-    background-color: #ffff;
     color: #000;
   }
   
@@ -27,13 +76,18 @@
   }
   
   .product-info p {
-    margin: 30px 0; /* Added margin to space out the product info */
+    margin: 20px 0; /* Added margin to space out the product info */
     color: #3b3b3b;
+    font-size: 0.9rem;
+  }
+
+  .product-info strong{
+    font-weight: 600;
   }
   
   .order-form {
-    width: 55%; /* Take up 55% of the form's width */
-    padding: 20px;
+    width: 60%; /* Take up 55% of the form's width */
+    padding: 20px 70px;
     border-radius: 8px;
   }
   
@@ -45,11 +99,15 @@
   
   .order-form div {
     margin-bottom: 15px;
+    padding: 10px 40px;
+
+  }
+  .place-order-form{
+margin-bottom: 40px;
   }
   
   .order-form label {
     display: block;
-    font-weight: bold;
   }
   
   .order-form input[type="number"],
@@ -71,28 +129,40 @@
     outline: none;
     border-color: #66afe9;
   }
+  .validation-message {
+    font-size: 12px;
+    color: #6c757d; /* Default gray */
+  }
+  
+  .validation-message.error {
+    color: red;
+  }
+  
   
   .order-form .error {
     color: red;
-    font-size: 12px;
+    font-size: 10px;
   }
   
   .order-form .notification {
-    color: green;
-    font-weight: bold;
-    text-align: center;
-    margin-top: 20px;
+    background-color: #d4edda;
+    color: #155724;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
   }
   
   .order-form button {
-    padding: 10px 20px;
     font-size: 16px;
-    background-color: #4CAF50;
+    background-color: #43C17A;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    width: 100%;
+    width: 80%;
+    margin: 10px auto; /* Center the button horizontally */
+    display: block; /* Ensure the button behaves like a block element */
+    text-align: center; /* Center text inside the button */
   }
   
   .order-form button:disabled {
@@ -103,6 +173,33 @@
   .order-form button:hover {
     background-color: #45a049;
   }
+
+  /* PlaceOrder.css */
+small {
+  font-size: 12px; /* Set smaller font size for both helper and error text */
+  color: gray; /* Default color for helper text */
+  display: block;
+  margin-top: 4px;
+}
+
+small.error {
+  color: red; /* Red color for error messages */
+}
+
+.back-button {
+  position: fixed;
+  top: 20px; /* Adjust the vertical position */
+  left: calc(var(--sidebar-width, 240px) + 50px); /* Add extra space to avoid overlap */
+  transition: left 0.3s ease; /* Smooth transition for sidebar toggle */
+  z-index: 1000; /* Ensure it appears above other elements */
+}
+
+.sidebar-closed .back-button {
+  left: 90px; /* Add margin from the menu toggle button when sidebar is closed */
+}
+
+
+  
   
   @media screen and (max-width: 768px) {
     .place-order-form {

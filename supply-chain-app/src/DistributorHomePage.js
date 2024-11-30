@@ -4,6 +4,8 @@ import RoleContract from './contracts/RoleContract.json';
 import OrderContract from './contracts/OrderContract.json';
 import ProductContract from './contracts/ProductContract.json';
 import './DistributorHomePage.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBoxOpen } from '@fortawesome/free-solid-svg-icons';
 
 const DistributorHomePage = () => {
   const [distributorInfo, setDistributorInfo] = useState(null);
@@ -161,7 +163,7 @@ const DistributorHomePage = () => {
             <div className="order-card" key={index}>
               <p><strong>Order ID:</strong> {parseInt(order.orderId)}</p>
               <p><strong>Quantity:</strong> {parseInt(order.quantity)}</p>
-              <p><strong>Weight (kg):</strong> {parseInt(order.weight)}</p>
+              <p><strong>Weight (g):</strong> {parseInt(order.weight)}</p>
               <p><strong>Delivery Time:</strong> {order.deliveryInfo.deliveryTime}</p>
               <p><strong>Delivery Date:</strong> {order.deliveryInfo.deliveryDate}</p>
               <p><strong>Day:</strong> {new Date(order.deliveryInfo.deliveryDate).toLocaleDateString('en-SA', { weekday: 'long' })}</p>
@@ -176,7 +178,9 @@ const DistributorHomePage = () => {
             </div>
           ))
         ) : (
-          <p>No delivery requests available.</p>
+         <p className="no-orders-message">
+          No delivery requests available at the moment.<FontAwesomeIcon icon={faBoxOpen} />
+          </p>
         )}
       </div>
     </div>

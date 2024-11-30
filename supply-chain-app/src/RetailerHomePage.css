@@ -1,10 +1,18 @@
-/* General Page Styling */
+
+
+  /* General Page Styling */
 .container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
     margin-left: 240px; /* Default margin for larger screens */
+    transition: margin-left 0.3s ease; /* Transition for sidebar open/close */
+
 }
+.sidebar-closed .container{
+    margin-left: 60px;
+  }
+  
 
 /* Retailer Info Section */
 .retailer-info {
@@ -35,7 +43,7 @@
 }
 
 h2 {
-    color: white;
+    color: rgb(0, 0, 0);
 }
 
 /* Order Card */

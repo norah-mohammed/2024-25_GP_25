@@ -98,7 +98,7 @@ const DistributorOrdersPage = () => {
 
   return (
     <div className="distributor-orders-page">
-      <h1 className="page-title">Distributor Orders Page</h1>
+      <h2 >Orders</h2>
       {notification && <div className="notification">{notification}</div>}
       {loading ? (
         <p className="loading-message">Loading orders...</p>
@@ -123,7 +123,7 @@ const DistributorOrdersPage = () => {
                 <td className="table-cell">{parseInt(order.orderId)}</td>
                 <td className="table-cell">{parseInt(order.productId)}</td>
                 <td className="table-cell">{parseInt(order.quantity)}</td>
-                <td className="table-cell">{order.deliveryInfo.deliveryDate}</td>
+                <td style={{ whiteSpace: 'nowrap' }}>{order.deliveryInfo.deliveryDate}</td>
                 <td className="table-cell">{order.deliveryInfo.deliveryTime}</td>
                 <td className="table-cell">{order.deliveryInfo.shippingAddress}</td>
                 <td className={`status ${order.status.toLowerCase().replace(/\s+/g, '-')}`}>{order.status}</td>
