@@ -12,16 +12,16 @@ module.exports = async function (callback) {
     const distributorAddress = "0x5841278Ca9641dc81451036958133D84e8476281";
 
     // Distributor details
-    const name = "DHL Logistics";
-    const physicalAddress = "1 DHL Avenue, Bonn, Germany";
-    const phoneNumber = "+49-228-182-1111";
-    const email = "logistics@dhl.com";
+    const name = "FreshLink Logistic";
+    const physicalAddress = "123 Logistic Street, Riyadh, Saudi Arabia";
+    const phoneNumber = "+966-11-555-1234";
+    const email = "info@freshlinklogistic.com";
     const isRefrigerated = true; // Supports refrigerated shipments
     const isFrozen = true; // Supports frozen shipments
     const isAmbient = true; // Supports ambient temperature shipments
     const isPM = true; // Available for evening deliveries
     const isAM = true; // Available for morning deliveries
-    const workingDays = [true, true, true, true, true, true, false]; // sunday to friday, not saturday
+    const workingDays = [true, true, true, true, true, false, false]; // Sunday to Thursday, not Friday and Saturday
 
     // Send the transaction to add a distributor, using an account from Ganache
     const result = await roleContract.addDistributor(
