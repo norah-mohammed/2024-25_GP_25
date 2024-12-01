@@ -1,0 +1,123 @@
+/* General Page Styling */
+
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  margin-left: 240px; /* Adjust for the sidebar width */
+
+}
+
+/* Retailer Info Section */
+.distributor-info {
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+}
+
+.distributor-info h2 {
+  font-size: 24px;
+  color: #388e3c;
+  margin-bottom: 15px;
+}
+
+.distributor-info p {
+  margin: 8px 0;
+  font-size: 16px;
+  color: #555;
+}
+
+/* Orders Section */
+.orders-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.order-card {
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px;
+  max-width: calc(33.333% - 20px); /* Adjust for 3 cards per row */
+  width: calc(33.333% - 20px); /* Ensure consistent width for 3 cards */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+
+.order-card p {
+  margin: 5px 0;
+  font-size: 14px;
+  color: #555;
+}
+
+.order-card .status {
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.order-card .status.waiting {
+  color: #fbc02d;
+}
+
+.order-card .status.accepted {
+  color: #388e3c;
+}
+
+.order-card .status.rejected {
+  color: #d32f2f;
+}
+
+/* Buttons */
+.order-card .actions {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.order-card button {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  flex: 1;
+  margin: 0 5px;
+}
+
+.order-card button:first-of-type {
+  background-color: #43C17A;
+  color: white;
+}
+
+.order-card button:last-of-type {
+  background-color: rgb(243, 240, 240);
+  color: #43C17A;
+  border: #43C17A 1px solid;
+}
+
+.order-card button:hover {
+  opacity: 0.9;
+}
+
+.btn-accept{
+  background-color: #43C17A;
+  color: white;
+}
+
+
+/* Footer Section */
+footer {
+  text-align: center;
+  padding: 15px 0;
+  background: #e8f5e9;
+  color: #555;
+  margin-top: 30px;
+  font-size: 14px;
+}

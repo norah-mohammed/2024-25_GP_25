@@ -1,0 +1,209 @@
+/* Body background with a light gradient effect */
+
+
+/* For container */
+.container {
+  margin-left: 240px;
+  transition: margin-left 0.3s ease;
+}
+
+.sidebar-closed .container {
+  margin-left: 60px;
+}
+
+/* Manufacturer Info Styling */
+.manufacturer-info {
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+}
+
+.manufacturer-info h2 {
+  font-size: 24px;
+  color: #388e3c;
+  margin-bottom: 15px;
+}
+
+.manufacturer-info p {
+  margin: 8px 0;
+  font-size: 16px;
+  color: #555;
+}
+
+.manufacturer-info strong {
+  font-weight: bold;
+}
+
+/* Orders Section Grid */
+.order-gridM {
+  display: flex;
+  flex-wrap: wrap; /* Allow wrapping of items */
+  gap: 20px; /* Spacing between cards */
+  justify-content: flex-start; /* Align items to the left */
+  margin-top: 20px; /* Add some spacing from the heading */
+}
+.orders-sectionM h2{
+  color: #000000;
+}
+
+/* Individual Order Card */
+.order-cardM {
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for card */
+  flex: 1 1 calc(33.333% - 20px); /* Three cards per row with gaps */
+  max-width: calc(33.333% - 20px); /* Ensure proper width for three cards */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box; /* Include padding and border in width calculation */
+}
+.no-orders-message {
+  font-size: 16px;
+  color: #555; /* Subtle gray text */
+  margin-top: 20px;
+  font-weight: bold;
+  display: flex; /* Allows alignment with the icon */
+  align-items: left;
+  justify-content: left;
+}
+
+.no-orders-message svg {
+  margin-left: 10px;
+  color: #919191; /* Green for success */
+  font-size: 18px; /* Slightly larger than the text */
+}
+
+
+
+
+/* Adjust card width for smaller screens */
+@media (max-width: 768px) {
+  .order-cardM {
+    flex: 1 1 calc(50% - 20px); /* Two cards per row */
+    max-width: calc(50% - 20px);
+  }
+}
+
+@media (max-width: 480px) {
+  .order-cardM {
+    flex: 1 1 100%; /* One card per row */
+    max-width: 100%;
+  }
+}
+
+/* Order Actions Styling */
+.order-actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Accept and Reject Buttons */
+.order-actions button {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  flex: 1;
+  margin: 0 5px; /* Space between buttons */
+}
+
+.order-actions button:first-of-type {
+  background-color: #43C17A; /* Green for accept */
+  color: white;
+}
+
+.order-actions button:last-of-type {
+  background-color: #f8f9fa; /* Light gray for reject */
+  color: #43C17A;
+  border: 1px solid #43C17A;
+}
+
+.order-actions button:hover {
+  opacity: 0.9; /* Subtle hover effect */
+}
+
+
+.order-cardM p {
+  margin: 5px 0;
+  font-size: 14px;
+  color: #555;
+}
+
+.order-cardM .status {
+  margin-top: 10px;
+  font-weight: bold;
+}
+.order-cardM .actions {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.order-cardM button {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  flex: 1;
+  margin: 0 5px;
+}
+
+.order-cardM button:first-of-type {
+  background-color: #43C17A;
+  color: white;
+}
+
+.order-cardM button:last-of-type {
+  background-color: rgb(243, 240, 240);
+  color: #43C17A;
+  border: #43C17A 1px solid;
+}
+
+.order-cardM button:hover {
+  opacity: 0.9;
+}
+
+.btn-accept{
+  background-color: #43C17A;
+  color: white;
+}
+
+/* Notification Styling */
+.notification {
+  background-color: #d4edda;
+  color: #155724;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+}
+h2{
+  color: #388e3c;
+}
+/* Adjust card width for smaller screens */
+@media (max-width: 768px) {
+  .container {
+    margin-left: 0; /* Remove left margin for small screens */
+  }
+
+  .order-cardM {
+    flex: 1 1 calc(50% - 20px); /* Two cards per row */
+    max-width: calc(50% - 20px);
+  }
+}
+
+@media (max-width: 480px) {
+  .order-cardM {
+    margin-left: 0; /* Remove left margin for small screens */
+    flex: 1 1 100%; /* One card per row */
+    max-width: 100%;
+  }
+}
