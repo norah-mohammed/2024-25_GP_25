@@ -11,11 +11,11 @@ module.exports = async function (callback) {
     // The Ethereum address of the new manufacturer
     const manufacturerAddress = "0x44ac54E6B0d3C82CDBB55FB034D47DB05dF9Cc1d";  // New Manufacturer Ethereum address
 
-    // New realistic manufacturer details for Nestlé
-    const name = "Nestlé";
-    const physicalAddress = "Avenue Nestlé 55, 1800 Vevey, Switzerland";
-    const phoneNumber = "+41-21-924-1111";
-    const email = "info@nestle.com";
+    // New manufacturer details for Nadec
+    const name = "Nadec";
+    const physicalAddress = "123 Dairy Road, Riyadh, Saudi Arabia";
+    const phoneNumber = "+966-11-555-6789";
+    const email = "info@nadec.com";
 
     // Send the transaction to add a manufacturer, using an account from Ganache
     const result = await roleContract.addManufacturer(
