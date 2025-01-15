@@ -139,6 +139,8 @@ const App = () => {
         return <NonUserPage />;
       case 'manufacturerDistributorsPage':
         return <ManufacturerDistributorsPage />;
+      case 'RetailerOrdersPage':
+       return <RetailerOrdersPage />;
     }
   };
 
