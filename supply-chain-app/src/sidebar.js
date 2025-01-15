@@ -97,6 +97,14 @@ const Sidebar = ({ role, currentPage, setCurrentPage }) => {
                             >
                                 <FontAwesomeIcon icon={faClipboardList} className="nav-icon" /> View Manufacturers
                             </a>
+                             {/* Add Order Button */}
+                             <a
+                                  href="#orders"
+                                  onClick={() => setCurrentPage('RetailerOrdersPage')}
+                                  className={`nav-item ${currentPage === 'RetailerOrdersPage' ? 'active' : ''}`}
+                              >
+                               <FontAwesomeIcon icon={faShoppingCart} className="nav-icon" /> Orders
+                            </a>
                         </>
                     )}
                     {role === 'distributor' && (
