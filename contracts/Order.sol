@@ -164,4 +164,25 @@ contract OrderContract {
 
         return distributorOrders;
     }
+      // View all orders by retailer
+    function getOrdersByRetailer(address _retailer) public view returns (Order[] memory) {
+        uint orderCount = 0;
+        // Count the number of orders for the retailer
+        for (uint i = 0; i < orders.length; i++) {
+            if (orders[i].retailer == _retailer) {
+                orderCount++;
+            }
+        }
+        // Create an array to store retailer orders
+        Order[] memory retailerOrders = new Order[](orderCount);
+        uint index = 0;
+        // Populate the array with matching orders
+        for (uint i = 0; i < orders.length; i++) {
+            if (orders[i].retailer == _retailer) {
+                retailerOrders[index] = orders[i];
+                index++;
+            }
+        }
+        return retailerOrders;
+    }
 }
