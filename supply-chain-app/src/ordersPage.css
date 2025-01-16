@@ -27,6 +27,36 @@
 .sidebar-closed .distributor-orders-page{
   margin-left: 60px;
 }
+
+/*  Page Styling fot RetailerOrdrsPage.js */
+.retailer-orders-page {
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  margin-left: 250px; /* Adjust for sidebar */
+  transition: margin-left 0.3s ease; /* Transition for sidebar open/close */
+
+}
+.sidebar-closed .retailer-orders-page{
+  margin-left: 60px;
+}
+.retailer-orders-page h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* Notification Styling */
+.notification {
+  background-color: #eaf8e6;
+  color: #3a7634;
+  border: 1px solid #c6e5b3;
+  padding: 10px;
+  margin-bottom: 20px;
+  text-align: center;
+  border-radius: 5px;
+}
+
 /* Table Styles */
 table {
   width: 100%;
