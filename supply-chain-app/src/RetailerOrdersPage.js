@@ -129,16 +129,7 @@ const RetailerOrdersPage = () => {
                 <td className={`status ${order.status.toLowerCase().replace(/\s+/g, '-')}`}>{order.status}</td>
                 <td className="table-cell">{order.manufacturerName}</td>
                 <td className="actions-cell">
-                  {order.status === 'In Transit' && (
-                    <button className="confirm-delivery-button" onClick={() => handleConfirmDelivery(order.orderId)}>
-                      Confirm Delivery
-                    </button>
-                  )}
-                  {order.status !== 'Delivered' && order.status !== 'Canceled' && (
-                    <button className="cancel-button" onClick={() => handleCancelOrder(order.orderId)}>
-                      Cancel Order
-                    </button>
-                  )}
+                 
                 </td>
               </tr>
             ))}
