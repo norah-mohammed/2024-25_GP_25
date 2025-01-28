@@ -13,6 +13,8 @@ import PlaceOrder from './PlaceOrder';
 import NonUserPage from './NonUserPage';
 import OrdersPage from './OrdersPage';
 import ManufacturerDistributorsPage from './ManufacturerDistributorsPage';
+import RetailerOrders from './RetailerOrders';
+import TrackOrderPage from './TrackOrderPage'; // Import TrackOrderPage
 import './App.css';
 
 const App = () => {
@@ -23,7 +25,8 @@ const App = () => {
   const [role, setRole] = useState('');
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState('');
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true); // State to manage sidebar
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [trackingOrderId, setTrackingOrderId] = useState(null); // State for tracking order ID
 
   useEffect(() => {
     const initWeb3 = async () => {
@@ -135,10 +138,24 @@ const App = () => {
         return <DistributorHomePage />;
       case 'distributorOrdersPage':
         return <DistributorOrdersPage />;
-      default:
-        return <NonUserPage />;
+      case 'retailerOrders':
+        return (
+          <RetailerOrders
+            setTrackingOrderId={setTrackingOrderId} // Pass function to set tracking order ID
+            setCurrentPage={setCurrentPage}
+          />
+        );
+      case 'trackOrder': // TrackOrderPage navigation
+        return (
+          <TrackOrderPage
+            trackingOrderId={trackingOrderId}
+            goBack={() => setCurrentPage('retailerOrders')}
+          />
+        );
       case 'manufacturerDistributorsPage':
         return <ManufacturerDistributorsPage />;
+      default:
+        return <NonUserPage />;
     }
   };
 
@@ -149,7 +166,7 @@ const App = () => {
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
         isSidebarOpen={isSidebarOpen}
-        toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} // Toggle sidebar state
+        toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
       />
       <div className="content-container">{loading ? <p>Loading...</p> : renderPage()}</div>
       <footer className="footer">

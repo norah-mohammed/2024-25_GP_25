@@ -72,7 +72,9 @@ const ViewManufacturers = ({ onViewProducts }) => {
   if (!isRetailer) return <div><h2>{errorMessage}</h2></div>;
 
   return (
-<div className={`view-manufacturers-container ${isLoaded ? "loaded" : ""}`}>    
+    
+<div className={`view-manufacturers-container ${isLoaded ? "loaded" : ""}`}>  
+    
     <h2 className="page-title">Available Manufacturers</h2>
       {errorMessage && <p className="error-message">{errorMessage}</p>}
       <div className="search-bar-container">

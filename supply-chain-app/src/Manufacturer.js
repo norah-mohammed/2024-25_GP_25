@@ -18,8 +18,8 @@ const Manufacturer = () => {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState('home'); // 'home' or 'AddProduct'
+  const [loading, setLoading] = useState(false);
 
-  // Initialize web3 and contracts
   useEffect(() => {
     const initWeb3 = async () => {
       await window.ethereum.request({ method: 'eth_requestAccounts' });
@@ -56,9 +56,9 @@ const Manufacturer = () => {
     initWeb3();
   }, []);
 
-  // Function to load products
   const loadProducts = async (contract, account) => {
     try {
+      setLoading(true);
       const productsByManufacturer = await contract.methods.getProductsByManufacturer(account).call();
       const formattedProducts = productsByManufacturer.map(product => ({
         ...product,
@@ -74,10 +74,24 @@ const Manufacturer = () => {
       setFilteredProducts(formattedProducts); // Initialize filtered products
     } catch (error) {
       console.error("Error loading products:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  // Function to add product and immediately refresh the list
+  // Function to update product status
+  const updateProductStatus = async (productId, newStatus) => {
+    try {
+      setLoading(true);
+      await productContract.methods.updateProductStatus(productId, newStatus).send({ from: accounts[0] });
+      await loadProducts(productContract, accounts[0]); // Refresh products list
+    } catch (error) {
+      console.error("Error updating product status:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleProductAdded = async () => {
     if (productContract && accounts.length > 0) {
       await loadProducts(productContract, accounts[0]);
@@ -120,9 +134,9 @@ const Manufacturer = () => {
                 Products
               </a>
             </div>
-
+  
             <h2>Products</h2>
-
+  
             {/* Button Group */}
             <div className="button-group">
               <button
@@ -131,7 +145,7 @@ const Manufacturer = () => {
               >
                 <FontAwesomeIcon icon={faPlus} style={{ marginRight: "8px" }} /> Add Product
               </button>
-
+  
               {/* Search Bar */}
               <div className="search-bar-container">
                 <FontAwesomeIcon icon={faSearch} className="search-icon" />
@@ -151,7 +165,7 @@ const Manufacturer = () => {
                 )}
               </div>
             </div>
-
+  
             {/* Display Products Table */}
             {filteredProducts.length > 0 ? (
               <table border>
@@ -166,6 +180,7 @@ const Manufacturer = () => {
                     <th>Items Per Pack</th>
                     <th>Temperature Range (°C)</th>
                     <th>Transport Mode</th>
+                    <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -184,6 +199,17 @@ const Manufacturer = () => {
                       <td>{product.itemsPerPack}</td>
                       <td>{product.minTemp}°C to {product.maxTemp}°C</td>
                       <td>{['Refrigerated', 'Frozen', 'Ambient'][parseInt(product.transportMode)]}</td>
+                      <td>
+                        {product.status === "In Stock" ? (
+                          <button onClick={() => updateProductStatus(product.productId, "Out of Stock")}>
+                            Mark Out of Stock
+                          </button>
+                        ) : (
+                          <button onClick={() => updateProductStatus(product.productId, "In Stock")}>
+                            Mark In Stock
+                          </button>
+                        )}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -195,6 +221,7 @@ const Manufacturer = () => {
         );
     }
   };
+  
 
   if (!isManufacturer) {
     return <div><h2>You are not registered as a manufacturer</h2></div>;
@@ -202,6 +229,7 @@ const Manufacturer = () => {
 
   return (
     <div>
+      {loading && <p>Loading...</p>}
       {renderPage()}
     </div>
   );

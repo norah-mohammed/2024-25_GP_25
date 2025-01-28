@@ -41,6 +41,7 @@ const ManufacturerProducts = ({ manufacturerAddress, onPlaceOrder, goBack }) => 
           maxTemp: parseInt(product.maxTemp, 10),
           minTemp: parseInt(product.minTemp, 10),
           transportMode: parseInt(product.transportMode, 10),
+          status: product.status, // Ensure status is included
         }));
 
         setProducts(formattedProducts);
@@ -65,6 +66,14 @@ const ManufacturerProducts = ({ manufacturerAddress, onPlaceOrder, goBack }) => 
     goBack(); // This navigates back to the manufacturers view
   };
 
+  // Filter products by status and search term
+  const filteredProducts = products
+    .filter(product => product.status === "In Stock") // Only include products that are "In Stock"
+    .filter(product => 
+      product.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+      product.productId.toString().includes(searchTerm)
+    );
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -77,7 +86,7 @@ const ManufacturerProducts = ({ manufacturerAddress, onPlaceOrder, goBack }) => 
     <div className={`manufacturer-products ${isLoaded ? "loaded" : ""}`}>
       {/* Breadcrumb with Navigation */}
       <div className="breadcrumb">
-      <span
+        <span
           className="breadcrumb-link"
           onClick={navigateToViewManufacturers}
           style={{ cursor: 'pointer' }}
@@ -119,11 +128,11 @@ const ManufacturerProducts = ({ manufacturerAddress, onPlaceOrder, goBack }) => 
         )}
       </div>
 
-      {products.length === 0 ? (
+      {filteredProducts.length === 0 ? (
         <p>No products available at the moment.</p>
       ) : (
         <div className="products-container">
-          {products.map((product, index) => (
+          {filteredProducts.map((product, index) => (
             <div key={index} className="product-card">
               <h3>{product.name}</h3>
               <p><strong>ID:</strong> {product.productId}</p>

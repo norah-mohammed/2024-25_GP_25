@@ -47,13 +47,14 @@ text-align: left;
 
 /* Table Header */
 table th {
+  background-color: #ffffff !important; /* Force white background */
   text-align: left;
   padding: 12px 7px; /* Adjusted padding */
   font-size: 0.8rem;
   color: #6c757d; /* Subtle gray for header text */
   font-weight: bold;
   text-transform: capitalize;
-  background-color: #ffffff; /* White background for header */
+ 
   border: none; /* Ensure no borders in the header */
 }
 

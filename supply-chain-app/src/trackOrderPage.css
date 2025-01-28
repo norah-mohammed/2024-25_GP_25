@@ -1,0 +1,138 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap");
+
+.trackOrderPage {
+  background: #f4f4f4;
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
+  color: #333;
+  transition: margin-left 0.3s ease; /* Smooth transition when sidebar opens */
+}
+
+.trackOrderPage.sidebar-open {
+  margin-left: 250px; /* Adjust this value according to the sidebar width */
+}
+
+.trackOrderPage .container {
+  background: #ffffff;
+  width: calc(100% - 250px); /* Consider sidebar width */
+  max-width: 1200px;
+  margin: 5% auto;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  transition: width 0.3s ease; /* Smooth transition for content width */
+}
+
+.trackOrderPage.sidebar-open .container {
+  width: calc(100% - 250px); /* Adjust content width when sidebar is open */
+}
+
+
+.trackOrderPage .rightbox {
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.trackOrderPage .rb-container {
+  font-family: 'Roboto', sans-serif;
+  width: 100%;
+  margin: auto;
+}
+
+.trackOrderPage .rb-container ul.rb {
+  margin: 2.5em 0;
+  padding: 0;
+  display: inline-block;
+  list-style: none;
+}
+
+.trackOrderPage .rb-container ul.rb li {
+  position: relative;
+  margin-left: 10em;
+  min-height: 50px;
+  border-left: 2px dashed #50d890;
+  padding: 0 0 50px 30px;
+}
+
+.trackOrderPage .rb-container ul.rb li:last-child {
+  border-left: 0;
+}
+
+.trackOrderPage .rb-container ul.rb li::before {
+  position: absolute;
+  left: -18px;
+  top: -5px;
+  content: " ";
+  border: 8px solid rgba(255, 255, 255, 1);
+  border-radius: 50%;
+  background: #50d890;
+  height: 20px;
+  width: 20px;
+  transition: all 500ms ease-in-out;
+}
+
+.trackOrderPage .rb-container ul.rb li:hover::before {
+  border-color: #00796b;
+  transition: all 1000ms ease-in-out;
+}
+
+.trackOrderPage ul.rb li .timestamp {
+  color: #00796b;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.trackOrderPage ul.rb li .item-title {
+  font-size: 18px;
+  color: #333;
+  font-weight: 600;
+}
+
+.trackOrderPage ul.rb li .location {
+  font-size: 14px;
+  color: #50d890;
+  margin-top: 5px;
+  border-left: 3px solid #50d890;
+  padding-left: 5px;
+}
+
+
+
+
+.trackOrderPage .rb-container ul.rb li.rejected .item-title,
+.trackOrderPage .rb-container ul.rb li.canceled .item-title {
+  color: #ff4d4d; /* Red text for rejected/canceled orders */
+  font-weight: bold;
+}
+
+.trackOrderPage .rb-container ul.rb li.rejected:last-child,
+.trackOrderPage .rb-container ul.rb li.canceled:last-child {
+  border-left: none; /* Remove the line for the last rejected/canceled order */
+  padding-bottom: 0; /* Remove extra spacing */
+}
+.trackOrderPage .rb-container ul.rb li.rejected.rb-item::before {
+  background: #ff4d4d !important;
+}
+
+.trackOrderPage .rb-container ul.rb li.rejected.rb-item:hover::before {
+  background: #ff0000 !important;
+}
+
+
+
+@media (max-width: 768px) {
+  .trackOrderPage .container {
+    width: 95%;
+    padding: 15px;
+  }
+  .trackOrderPage .rb-container ul.rb li {
+    padding: 15px;
+  }
+  .trackOrderPage .item-title {
+    font-size: 16px;
+  }
+  .trackOrderPage .timestamp {
+    font-size: 12px;
+  }
+}

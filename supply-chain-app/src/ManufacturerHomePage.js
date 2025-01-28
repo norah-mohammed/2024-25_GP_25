@@ -86,25 +86,35 @@ const ManufacturerHomePage = () => {
     setLoading(true);
     try {
         const ordersList = await orderContract.methods.getOrdersByManufacturer(account).call();
-        const filteredOrders = ordersList.filter(order => order.status === "Waiting for manufacturer acceptance");
+
+        if (!ordersList || ordersList.length === 0) {
+            throw new Error("No orders found or empty response.");
+        }
+
+        const filteredOrders = ordersList.filter(order => order.status && order.status === "Waiting for manufacturer acceptance");
 
         const ordersWithProducts = await Promise.all(filteredOrders.map(async order => {
-            const product = await productContract.methods.getProductById(order.productId).call();
-            return {
-                ...order,
-                productId: order.productId.toString(),
-                orderId: order.orderId.toString(),
-                quantity: order.quantity.toString(),
-                productName: product.name,
-                productDescription: product.description,
-                transportMode: product.transportMode,
-                deliveryDate: order.deliveryInfo.deliveryDate,
-                deliveryTime: order.deliveryInfo.deliveryTime,
-                shippingAddress: order.deliveryInfo.shippingAddress,
-             
-            };
+            try {
+                const product = await productContract.methods.getProductById(order.productId).call();
+                return {
+                    ...order,
+                    productId: order.productId.toString(),
+                    orderId: order.orderId.toString(),
+                    quantity: order.quantity.toString(),
+                    productName: product?.name || "Unknown Product",
+                    productDescription: product?.description || "No description",
+                    transportMode: product?.transportMode || "Unknown",
+                    deliveryDate: order.deliveryInfo?.deliveryDate || "N/A",
+                    deliveryTime: order.deliveryInfo?.deliveryTime || "N/A",
+                    shippingAddress: order.deliveryInfo?.shippingAddress || "N/A",
+                };
+            } catch (error) {
+                console.warn(`Error fetching product for order ${order.orderId}:`, error);
+                return null;  // Skip problematic orders
+            }
         }));
-        setOrders(ordersWithProducts);
+
+        setOrders(ordersWithProducts.filter(order => order !== null));
     } catch (error) {
         console.error("Error fetching orders:", error);
         setErrorMessage("Failed to fetch orders. Please try again later.");
@@ -112,6 +122,7 @@ const ManufacturerHomePage = () => {
         setLoading(false);
     }
 };
+
 
 
 

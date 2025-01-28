@@ -15,7 +15,7 @@ const Sidebar = ({ role, currentPage, setCurrentPage }) => {
         document.body.classList.toggle('sidebar-closed', !sidebarOpen);
     }, [sidebarOpen]);
 
-    // Handle breadcrumb visibility
+    // Pages where the breadcrumb is hidden
     const hiddenBreadcrumbPages = ["AddProduct", "viewManufacturers", "manufacturerProduct", "placeOrder"];
     const showBreadcrumb = !hiddenBreadcrumbPages.includes(currentPage);
 
@@ -96,6 +96,13 @@ const Sidebar = ({ role, currentPage, setCurrentPage }) => {
                                 className={`nav-item ${currentPage === 'viewManufacturers' ? 'active' : ''}`}
                             >
                                 <FontAwesomeIcon icon={faClipboardList} className="nav-icon" /> View Manufacturers
+                            </a>
+                            <a
+                                href="#retailerOrders"
+                                onClick={() => setCurrentPage('retailerOrders')}
+                                className={`nav-item ${currentPage === 'retailerOrders' ? 'active' : ''}`}
+                            >
+                                <FontAwesomeIcon icon={faClipboardList} className="nav-icon" /> Orders
                             </a>
                         </>
                     )}

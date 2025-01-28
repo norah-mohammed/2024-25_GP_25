@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import getWeb3 from './web3';
 import OrderContract from './contracts/OrderContract.json';
 import RoleContract from './contracts/RoleContract.json';
+import TrackOrderPage from './TrackOrderPage'; // Import TrackOrderPage
 import "./ordersPage.css";
 
 const OrdersPage = () => {
@@ -15,6 +16,9 @@ const OrdersPage = () => {
   const [account, setAccount] = useState('');
   const [loading, setLoading] = useState(true);
   const [notification, setNotification] = useState('');
+  const [trackingOrderId, setTrackingOrderId] = useState(null);
+const [currentPage, setCurrentPage] = useState('orders');
+
 
   const selectDistributorRef = useRef(null);
 
@@ -105,6 +109,13 @@ const OrdersPage = () => {
     }
   };
 
+  const handleTrackOrder = (orderId) => {
+    console.log("Tracking order ID:", orderId);
+    setTrackingOrderId(orderId);
+    setCurrentPage('trackOrder');
+  };
+  
+
   const getSaudiDayIndex = (dateString) => {
     const date = new Date(dateString);
     const jsDayIndex = date.getDay();
@@ -166,6 +177,10 @@ const OrdersPage = () => {
     }
   };
 
+  if (currentPage === 'trackOrder' && trackingOrderId) {
+    return <TrackOrderPage orderId={trackingOrderId} goBack={() => setCurrentPage('orders')} />;
+  }
+
   return (
     <div className="ordersSection">
       <h2>Orders</h2>
@@ -210,7 +225,9 @@ const OrdersPage = () => {
     >
       Prepare Order
     </button>
+    
   )}
+  
   {['Preparing for Dispatch', 'Rejected by Distributor'].includes(order.status) && (
     <>
       <button
@@ -229,6 +246,9 @@ const OrdersPage = () => {
       </button>
     </>
   )}
+    <button onClick={() => handleTrackOrder(order.orderId)}>
+            Track Order
+          </button>
 </td>
 
 
