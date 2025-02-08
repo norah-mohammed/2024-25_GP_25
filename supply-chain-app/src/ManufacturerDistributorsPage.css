@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /* ManufacturerDistributorsPage.css */
 
 .distributors-container {
@@ -73,4 +74,81 @@
       }
   }
   
+=======
+/* ManufacturerDistributorsPage.css */
+
+.distributors-container {
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px auto;
+    max-width: 1200px;
+    margin-left: 240px;
+    transition: margin-left 0.3s ease; /* Transition for sidebar open/close */
+
+  }
+  .sidebar-closed .distributors-container{
+    margin-left: 60px;
+  }
+  
+  .distributors-container h2 {
+  
+    color: #000000;
+  }
+  
+  .distributors-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .distributors-table th,
+  .distributors-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .distributors-table th {
+    text-align: left;
+    padding: 12px 15px;
+    font-size: 0.8rem;
+    color: #6c757d; /* Subtle gray for header text */
+    font-weight: bold;
+    text-transform: capitalize;
+    background-color: #ffffff; /* White background for header */
+    border: none;
+  }
+  
+  .distributors-table tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  .distributors-table td {
+    color: #555;
+  }
+  
+  .distributors-table td:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  p {
+    text-align: left;
+    font-size: 1.2rem;
+  }
+  
+  @media (max-width: 768px) {
+    .distributors-table {
+      font-size: 0.9rem;
+    }
+   
+      .distributors-container{
+        margin-left: 0;
+      }
+  }
+  
+>>>>>>> a3f765335766a01627d14b387ebc3eff98292240
   
