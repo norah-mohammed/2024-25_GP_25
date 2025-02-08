@@ -13,6 +13,11 @@ import PlaceOrder from './PlaceOrder';
 import NonUserPage from './NonUserPage';
 import OrdersPage from './OrdersPage';
 import ManufacturerDistributorsPage from './ManufacturerDistributorsPage';
+<<<<<<< HEAD
+=======
+import RetailerOrders from './RetailerOrders';
+import TrackOrderPage from './TrackOrderPage'; // Import TrackOrderPage
+>>>>>>> a3f765335766a01627d14b387ebc3eff98292240
 import './App.css';
 
 const App = () => {
@@ -23,7 +28,12 @@ const App = () => {
   const [role, setRole] = useState('');
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState('');
+<<<<<<< HEAD
   const [isSidebarOpen, setIsSidebarOpen] = useState(true); // State to manage sidebar
+=======
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [trackingOrderId, setTrackingOrderId] = useState(null); // State for tracking order ID
+>>>>>>> a3f765335766a01627d14b387ebc3eff98292240
 
   useEffect(() => {
     const initWeb3 = async () => {
@@ -135,12 +145,33 @@ const App = () => {
         return <DistributorHomePage />;
       case 'distributorOrdersPage':
         return <DistributorOrdersPage />;
+<<<<<<< HEAD
       default:
         return <NonUserPage />;
       case 'manufacturerDistributorsPage':
         return <ManufacturerDistributorsPage />;
       case 'RetailerOrdersPage':
        return <RetailerOrdersPage />;
+=======
+      case 'retailerOrders':
+        return (
+          <RetailerOrders
+            setTrackingOrderId={setTrackingOrderId} // Pass function to set tracking order ID
+            setCurrentPage={setCurrentPage}
+          />
+        );
+      case 'trackOrder': // TrackOrderPage navigation
+        return (
+          <TrackOrderPage
+            trackingOrderId={trackingOrderId}
+            goBack={() => setCurrentPage('retailerOrders')}
+          />
+        );
+      case 'manufacturerDistributorsPage':
+        return <ManufacturerDistributorsPage />;
+      default:
+        return <NonUserPage />;
+>>>>>>> a3f765335766a01627d14b387ebc3eff98292240
     }
   };
 
@@ -151,7 +182,11 @@ const App = () => {
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
         isSidebarOpen={isSidebarOpen}
+<<<<<<< HEAD
         toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} // Toggle sidebar state
+=======
+        toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+>>>>>>> a3f765335766a01627d14b387ebc3eff98292240
       />
       <div className="content-container">{loading ? <p>Loading...</p> : renderPage()}</div>
       <footer className="footer">
