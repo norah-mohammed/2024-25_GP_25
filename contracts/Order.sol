@@ -1,6 +1,15 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
+// RoleContract interface
+interface IRoleContract {
+    function getManufacturerAddress(address _manufacturer) external view returns (string memory);
+    function getDistributorAddress(address _distributor) external view returns (string memory);
+    function getRetailerAddress() external view returns (string memory);
+    function getDistributorName(address _distributor) external view returns (string memory);
+
+}
+
 contract OrderContract {
     struct Order {
         uint orderId;
@@ -9,7 +18,7 @@ contract OrderContract {
         uint productId;
         uint quantity;
         uint price; // Total price of the order (product price * quantity)
-        DeliveryInfo deliveryInfo; // Struct for delivery-related info
+        DeliveryInfo deliveryInfo;
         string status;
         address distributor;
         uint temperature;
@@ -24,11 +33,15 @@ contract OrderContract {
 
     Order[] public orders;
     uint public orderCounter = 0;
+    IRoleContract public roleContract; // Instance of the role contract
 
     event OrderStatusUpdated(uint orderId, string newStatus);
     event DistributorAssigned(uint orderId, address distributor);
 
-    // Function to create a new order
+    constructor(address _roleContractAddress) {
+        roleContract = IRoleContract(_roleContractAddress);
+    }
+
     function createOrder(
         uint _productId,
         uint _quantity,
@@ -36,7 +49,7 @@ contract OrderContract {
         string memory _deliveryDate,
         string memory _deliveryTime,
         string memory _shippingAddress,
-        uint _productPrice // This will be fetched from the product contract
+        uint _productPrice
     ) public {
         orderCounter++;
         uint totalPrice = _productPrice * _quantity;
@@ -47,6 +60,13 @@ contract OrderContract {
             shippingAddress: _shippingAddress
         });
 
+        string memory orderHistoryEntry = string(
+            abi.encodePacked(
+                uintToString(block.timestamp),
+                ",Order Created"
+            )
+        );
+
         orders.push(Order({
             orderId: orderCounter,
             retailer: msg.sender,
@@ -55,48 +75,224 @@ contract OrderContract {
             quantity: _quantity,
             price: totalPrice,
             deliveryInfo: delivery,
-            status: "Waiting for manufacturer acceptance",  // Set initial status
-            distributor: address(0), // Default value for distributor
-            temperature: 0, // Default value for temperature
-            orderHistory: "Order created and status set to waiting for manufacturer acceptance"
+            status: "Waiting for manufacturer acceptance",
+            distributor: address(0),
+            temperature: 0,
+            orderHistory: orderHistoryEntry
         }));
 
         emit OrderStatusUpdated(orderCounter, "Waiting for manufacturer acceptance");
     }
 
-    // Function to update the order status
+    // Function to update the order status with timestamp and history tracking
     function updateOrderStatus(uint _orderId, string memory _newStatus) public {
         require(_orderId > 0 && _orderId <= orderCounter, "Order does not exist.");
         Order storage order = orders[_orderId - 1];
 
-        // Update order status logic based on role (manufacturer, retailer, etc.) here
-        // For simplicity, we assume that the sender is allowed to change the status
+        // Get current timestamp
+        uint currentTime = block.timestamp;
+
+        // Store the new status with timestamp in the history
+        string memory newHistoryEntry = string(
+            abi.encodePacked(
+                order.orderHistory,
+                ",",
+                uintToString(currentTime),
+                ",",
+                _newStatus
+            )
+        );
+
         order.status = _newStatus;
-        order.orderHistory = string(abi.encodePacked(order.orderHistory, " | Status updated to ", _newStatus));
+        order.orderHistory = newHistoryEntry;
 
         emit OrderStatusUpdated(_orderId, _newStatus);
     }
 
-    // Function to assign a distributor to an order
-    function assignDistributor(uint _orderId, address _distributor) public {
-        require(_orderId > 0 && _orderId <= orderCounter, "Order does not exist.");
-        Order storage order = orders[_orderId - 1];
-        require(keccak256(abi.encodePacked(order.status)) == keccak256(abi.encodePacked("Preparing for Dispatch")), "Order is not ready for dispatch.");
-        order.distributor = _distributor;
-        order.status = "Dispatched";
-        order.orderHistory = string(abi.encodePacked(order.orderHistory, " | Assigned to distributor: ", toAsciiString(_distributor)));
-        emit DistributorAssigned(_orderId, _distributor);
-    }
+   
 
     // Function to cancel an order
     function cancelOrder(uint _orderId) public {
         require(_orderId > 0 && _orderId <= orderCounter, "Order does not exist.");
         Order storage order = orders[_orderId - 1];
         order.status = "Canceled";
-        order.orderHistory = string(abi.encodePacked(order.orderHistory, " | Order canceled due to lack of transportation"));
+
+        string memory newHistoryEntry = string(
+            abi.encodePacked(order.orderHistory, ",", uintToString(block.timestamp), ",Canceled")
+        );
+
+        order.orderHistory = newHistoryEntry;
         emit OrderStatusUpdated(_orderId, "Canceled");
     }
 
+   
+
+
+
+
+function assignDistributor(uint _orderId, address _distributor) public {
+    require(_orderId > 0 && _orderId <= orderCounter, "Order does not exist.");
+    Order storage order = orders[_orderId - 1]; // Use zero-based index
+
+    // Validate that the order is in a correct state for distributor assignment
+    require(
+        keccak256(bytes(order.status)) == keccak256(bytes("Preparing for Dispatch")) ||
+        keccak256(bytes(order.status)) == keccak256(bytes("Rejected by Distributor")),
+        "Order is not in a valid status for distributor assignment."
+    );
+
+    // Ensure a valid distributor address is provided
+    require(_distributor != address(0), "Invalid distributor address.");
+
+    // Update the order's distributor and status
+    order.distributor = _distributor;
+    order.status = "Dispatched";
+
+    // Simplify history update by not including distributor name to save on gas and complexity
+    // If it's essential to have the distributor's name, consider fetching and displaying it off-chain
+    updateOrderHistory(_orderId, "Assigned to distributor");
+
+    // Emitting events for changes
+    emit OrderStatusUpdated(_orderId, "Dispatched");
+    emit DistributorAssigned(_orderId, _distributor);
+}
+
+// Helper function to update order history with new event
+function updateOrderHistory(uint _orderId, string memory action) internal {
+    Order storage order = orders[_orderId - 1];
+    uint currentTime = block.timestamp;
+    order.orderHistory = string(abi.encodePacked(
+        order.orderHistory,
+        ",",
+        uintToString(currentTime),
+        ",",
+        action
+    ));
+}
+
+// Helper function to convert uint to string, more concise than the previous version
+function uintToString(uint _value) internal pure returns (string memory) {
+    if (_value == 0) {
+        return "0";
+    }
+    uint temp = _value;
+    uint digits;
+    while (temp != 0) {
+        digits++;
+        temp /= 10;
+    }
+    bytes memory buffer = new bytes(digits);
+    while (_value != 0) {
+        digits -= 1;
+        buffer[digits] = bytes1(uint8(48 + _value % 10));
+        _value /= 10;
+    }
+    return string(buffer);
+}
+
+   
+
+    // Function to get the address based on order status
+    function getAddressForStatus(
+        string memory _status,
+        address _manufacturer,
+        address _distributor
+    ) internal view returns (string memory) {
+        if (
+            keccak256(abi.encodePacked(_status)) == keccak256(abi.encodePacked("Waiting for manufacturer acceptance")) ||
+            keccak256(abi.encodePacked(_status)) == keccak256(abi.encodePacked("Paid")) ||
+            keccak256(abi.encodePacked(_status)) == keccak256(abi.encodePacked("Waiting for payment"))
+        ) {
+            return roleContract.getManufacturerAddress(_manufacturer);
+        } else if (
+            keccak256(abi.encodePacked(_status)) == keccak256(abi.encodePacked("Delivered to retailer")) ||
+            keccak256(abi.encodePacked(_status)) == keccak256(abi.encodePacked("Completed"))
+        ) {
+            return roleContract.getRetailerAddress();
+        } else {
+            return roleContract.getDistributorAddress(_distributor);
+        }
+    }
+
+    // Function to get all orders
+    function getAllOrders() public view returns (Order[] memory) {
+        return orders;
+    }
+
+    // Function to get orders by manufacturer
+    function getOrdersByManufacturer(address _manufacturer) public view returns (Order[] memory) {
+        uint count = 0;
+        for (uint i = 0; i < orders.length; i++) {
+            if (orders[i].manufacturer == _manufacturer) {
+                count++;
+            }
+        }
+
+        Order[] memory manufacturerOrders = new Order[](count);
+        uint index = 0;
+        for (uint i = 0; i < orders.length; i++) {
+            if (orders[i].manufacturer == _manufacturer) {
+                manufacturerOrders[index] = orders[i];
+                index++;
+            }
+        }
+        return manufacturerOrders;
+    }
+
+
+
+    // Function to get orders by distributor
+    function getOrdersByDistributor(address _distributor) public view returns (Order[] memory) {
+        uint orderCount = 0;
+        for (uint i = 0; i < orders.length; i++) {
+            if (orders[i].distributor == _distributor) {
+                orderCount++;
+            }
+        }
+
+        Order[] memory distributorOrders = new Order[](orderCount);
+        uint index = 0;
+        for (uint i = 0; i < orders.length; i++) {
+            if (orders[i].distributor == _distributor) {
+                distributorOrders[index] = orders[i];
+                index++;
+            }
+        }
+        return distributorOrders;
+    }
+
+
+
+    // Get a single order by ID
+function getOrderById(uint _orderId) public view returns (
+    uint orderId,
+    address retailer,
+    address manufacturer,
+    uint productId,
+    uint quantity,
+    uint price,
+    DeliveryInfo memory deliveryInfo,
+    string memory status,
+    address distributor,
+    uint temperature,
+    string memory orderHistory
+) {
+    require(_orderId > 0 && _orderId <= orderCounter, "Order does not exist.");
+    Order storage order = orders[_orderId - 1];
+    return (
+        order.orderId,
+        order.retailer,
+        order.manufacturer,
+        order.productId,
+        order.quantity,
+        order.price,
+        order.deliveryInfo,
+        order.status,
+        order.distributor,
+        order.temperature,
+        order.orderHistory
+    );
+}
     // Helper function to convert address to string
     function toAsciiString(address x) internal pure returns (string memory) {
         bytes memory s = new bytes(40);
@@ -115,6 +311,7 @@ contract OrderContract {
         else return bytes1(uint8(b) + 0x57);
     }
 
+<<<<<<< HEAD
     // Get orders by manufacturer
     function getOrdersByManufacturer(address _manufacturer) public view returns (Order[] memory) {
         uint orderCount = 0;
@@ -186,3 +383,6 @@ contract OrderContract {
         return retailerOrders;
     }
 }
+=======
+}
+>>>>>>> a3f765335766a01627d14b387ebc3eff98292240
