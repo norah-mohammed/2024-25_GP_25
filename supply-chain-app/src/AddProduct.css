@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /* General Container */
 .add-product-container {
     max-width: 700px;
@@ -216,3 +217,223 @@ form {
         margin: 0;
     }
 }
+=======
+/* General Container */
+.add-product-container {
+    max-width: 700px;
+    margin-top: 10px; /* Centering vertically */
+    padding: 0 20px;
+    border-radius: 10px;
+    transition: margin-left 0.3s ease; /* Transition for sidebar open/close */
+    margin-left: 240px;
+    margin-top: 0;
+}
+
+  .sidebar-closed .add-product-container{
+    margin-left: 60px;
+  }
+
+/* Back to Dashboard Button */
+.back-button {
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+    border: none;
+    color: white; /* Greenish color for the back button */
+    font-size: 0.8rem;
+    cursor: pointer;
+    margin-bottom: 20px;
+    transition: color 0.3s ease;
+    border-radius: 20px;
+    padding: 7px 15px;
+}
+
+.back-button svg {
+    margin-right: 3px; /* Space between icon and text */
+    font-size: 0.8rem;
+}
+
+.back-button:hover {
+    color: #3eb370; /* Darker green on hover */
+    background-color: #f0f0f0;
+}
+
+/* Page Title */
+.add-product-container h2 {
+    text-align: left;
+    color: #000000;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+}
+
+/* Multi-Step Form Style */
+.add-product-form {
+    max-width: 90%;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    padding: 30px 40px;
+    margin-left: 200px;
+    margin-right: 0;
+}
+
+/* Step Tracker */
+.step-tracker {
+    display: flex;
+    margin-bottom: 30px;
+    justify-content: space-between;
+}
+
+.step {
+    padding: 10px;
+    font-size: 0.8rem;
+    text-align: center;
+    width: 48%;
+    border-radius: 8px;
+    background-color: #f0f0f0;
+    color: #555;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.step.active {
+    background-color: #349256;
+    color: white;
+}
+
+.step:hover {
+    background-color: #e0e0e0;
+}
+
+/* Basic Info and Specifications Section */
+.basic-product-info,
+.product-specifications {
+    margin-bottom: 20px;
+}
+/* Input Labels */
+label {
+    display: block;
+    margin: 8px 0 4px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #333; /* Neutral text color */
+}
+
+/* Input Fields */
+input,
+textarea,
+select {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 12px;
+    font-size: 0.9rem;
+    border: 1px solid #ccc; /* Subtle border */
+    border-radius: 5px;
+    background-color: #fefefe; /* Minimal white background */
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Input Fields Hover and Focus */
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: #43C17A; /* Professional green border */
+    outline: none;
+    box-shadow: 0 0 4px rgba(67, 193, 122, 0.3); /* Minimal shadow */
+}
+
+/* Textarea Specific */
+textarea {
+    height: 100px;
+    resize: none; /* Prevent resizing */
+}
+
+/* Buttons */
+button {
+    background-color: #43C17A;
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+button:hover {
+    background-color: #349256; /* Slightly darker green */
+    transform: scale(1.02); /* Subtle scaling effect */
+}
+
+button:disabled {
+    background-color: #ddd; /* Neutral disabled state */
+    color: #888;
+    cursor: not-allowed;
+}
+
+/* Select Dropdown */
+select {
+    width: 100%;
+    padding: 12px;
+    font-size: 0.9rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff; /* Keep dropdown clean */
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Form Container Styling */
+form {
+    max-width: 600px;
+    margin: 0 auto; /* Center the form */
+    background: #fff;
+    border: 1px solid #eaeaea; /* Subtle border around form */
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* Minimal shadow */
+}
+
+/* Success Message */
+.success-message {
+    color: #43C17A;
+    font-size: 0.9rem;
+    margin-top: 10px;
+    text-align: center;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    input,
+    textarea,
+    select {
+        font-size: 0.85rem; /* Adjust font size for smaller screens */
+    }
+
+    button {
+        padding: 10px;
+        font-size: 0.85rem;
+    }
+}
+
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .add-product-container {
+        margin: 0;
+        width: 100%;
+        padding: 15px;
+    }
+
+    .step-tracker {
+        flex-direction: column;
+    }
+
+    .step {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    .add-product-form {
+        margin: 0;
+    }
+}
+>>>>>>> a3f765335766a01627d14b387ebc3eff98292240
