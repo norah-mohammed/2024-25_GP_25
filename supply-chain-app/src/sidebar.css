@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
 
 body {
@@ -280,3 +281,287 @@ p{
 
 }
 
+=======
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+body {
+    
+    font-family: 'Poppins', sans-serif;
+    background: #f4f4f4;
+    color: #333;
+}/* Sidebar Styles */
+.sidebar {
+    width: 240px;
+    background-color: #13a947;
+    height: 100vh;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    border-radius: 0 25px 25px 0;
+    transition: transform 0.3s ease-in-out, width 0.3s ease-in-out;
+    z-index: 1000;
+}
+.hide-breadcrumb .breadcrumb {
+    display: none;
+  }
+  
+.breadcrumb{
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    padding: 10px 20px;
+    background-color: #f9f9f9;
+    border-bottom: 1px solid #ddd;
+}
+.breadcrumb-link {
+    color: #000000;
+}
+
+.breadcrumb-link  {
+    color: #000000;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.breadcrumb-link:hover {
+    color: #2a802f;
+}
+
+.breadcrumb-link:last-child {
+    color: #2a802f; /* Green for the current page */
+}
+.notification {
+    background-color: #d4edda;
+    color: #155724;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+  }
+
+/* When the sidebar is closed, remove the left margin from the container */
+.sidebar.closed + .container {
+    margin-left: 0;  /* No margin when sidebar is closed */
+}
+
+/* When the sidebar is open, maintain the margin */
+.sidebar.open + .container {
+    margin-left: 240px; /* Or whatever width your sidebar has */
+}
+
+/* General Page Styling */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    transition: margin-left 0.3s ease; /* Smooth transition when sidebar is toggled */
+}
+.manufacturer-dashboard {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    transition: margin-left 0.3s ease; /* Smooth transition when sidebar is toggled */
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+    .container {
+        margin-left: 0; /* Remove margin when sidebar is hidden */
+    }
+
+    .order-cardM {
+        max-width: 45%; /* Two cards per row */
+    }
+    .manufacturer-dashboard {
+    
+        margin-left: 0; /* Remove margin when sidebar is hidden */
+      }
+}
+
+@media (max-width: 480px) {
+    .container {
+        margin-left: 0; /* Ensure full width on mobile */
+    }
+
+    .order-cardM {
+        max-width: 100%; /* One card per row on mobile */
+    }
+    .manufacturer-dashboard {
+        margin-left: 0; /* Remove margin when sidebar is hidden */
+      }
+      .manufacturer-dashboard {
+    
+        margin-left: 0; /* Remove margin when sidebar is hidden */
+      }
+}
+/* Sidebar Styles */
+.sidebar {
+    width: 240px;
+    background-color: #13a947;
+    height: 100vh;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    border-radius: 0 25px 25px 0;
+    transition: transform 0.3s ease-in-out, width 0.3s ease-in-out;
+    z-index: 1000;
+}
+
+/* Sidebar Closed */
+.sidebar.closed {
+    transform: translateX(-100%); /* Move sidebar off-screen */
+}
+
+/* Sidebar Open */
+.sidebar.open {
+    transform: translateX(0); /* Move sidebar into view */
+}
+
+/* Ensure the hamburger menu is always visible */
+.hamburger-menu {
+    position: fixed; /* Fixes the button to always be on screen */
+    top: 15px; /* Adjust distance from the top of the viewport */
+    left: 15px; /* Adjust distance from the left of the viewport */
+    z-index: 1100; /* Ensure it stays on top of all other elements */
+    font-size: 24px; /* Consistent button size */
+    background-color: transparent; /* No background */
+    border: none; /* Remove border */
+    color: #ffffff; /* White color for visibility */
+    cursor: pointer; /* Pointer cursor for interactivity */
+}
+
+/* Ensure it's always visible on all screen sizes */
+@media (max-width: 768px) {
+    .hamburger-menu {
+        display: block; /* Always displayed even in smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .hamburger-menu {
+        display: block; /* Always displayed even in very small screens */
+    }
+}
+
+
+/* Sidebar Navigation */
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    padding: 0;
+    margin-top: 20px;
+}
+
+/* Sidebar Navigation Links */
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    padding: 15px 25px;
+    margin-bottom: 10px;
+    color: white;
+    text-decoration: none;
+    font-size: 0.8rem;
+    border-radius: 15px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* Hover effect */
+.nav-item:hover {
+    background-color: #2a8042;
+}
+
+.nav-item.active {
+    background-color: white !important;
+    color: #349256 !important;
+    font-weight: bold;
+}
+
+/* Icon size adjustment */
+.nav-icon {
+    font-size: 20px;
+}
+
+/* Sidebar Header */
+.sidebar-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.logo {
+    height: 100px;
+    width: auto;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+}
+
+/* Responsive Design for Smaller Screens */
+@media (max-width: 768px) {
+    .hamburger-menu {
+        display: block;
+    }
+
+    .sidebar {
+        width: 240px;
+        transform: translateX(-100%); /* Sidebar starts off-screen */
+    }
+
+    .sidebar.open {
+        transform: translateX(0); /* Sidebar comes into view */
+    }
+}
+
+@media (max-width: 480px) {
+    .sidebar {
+        width: 200px;
+    }
+
+    .nav-item {
+        font-size: 0.9rem;
+    }
+
+    .nav-icon {
+        font-size: 20px;
+    }
+}
+
+body{
+    background-color: #f9f9f9;
+    
+}
+.page-content {
+    margin-left: 240px; /* Matches sidebar width */
+    padding: 20px;
+    transition: margin-left 0.3s ease; /* Adjusts for sidebar open/close */
+  }
+  
+  .sidebar.closed + .page-content {
+    margin-left: 60px; /* Adjust margin when sidebar is closed */
+  }
+  
+  @media (max-width: 768px) {
+    .page-content {
+      margin-left: 60px; /* Reduced margin for smaller screens */
+    }
+  }
+  
+
+p{
+    align-items: left;
+
+}
+
+>>>>>>> a3f765335766a01627d14b387ebc3eff98292240
