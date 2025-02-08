@@ -25370,12 +25370,21 @@
     "5777": {
       "events": {},
       "links": {},
+<<<<<<< HEAD
       "address": "0x2C6eA1fc7C2254330ED44C55fE17A3fDe0329904",
       "transactionHash": "0x64cacbe6dfb3a3bf264caaebebafdb88c856c4f397d887e648ca30fbc4cde330"
     }
   },
   "schemaVersion": "3.4.16",
   "updatedAt": "2024-11-29T23:59:03.145Z",
+=======
+      "address": "0xF7690ADB7E1bC7B815883AaB85033D0146bb5F6b",
+      "transactionHash": "0x2849f4a1d53688d4cc85609eeeb4d7f4ad9c216400122ae972aa8b28e9487370"
+    }
+  },
+  "schemaVersion": "3.4.16",
+  "updatedAt": "2024-11-30T18:30:22.815Z",
+>>>>>>> a3f765335766a01627d14b387ebc3eff98292240
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",
