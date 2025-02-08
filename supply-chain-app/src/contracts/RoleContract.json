@@ -24606,12 +24606,21 @@
     "5777": {
       "events": {},
       "links": {},
+<<<<<<< HEAD
       "address": "0xd67F3D5B84Ee69d56ADFF90BED0c58D77F9D76b7",
       "transactionHash": "0x43348f09dd352bbb112a3c1655e9193f56070a00ecf50051ad5df9ebf1aa9b15"
     }
   },
   "schemaVersion": "3.4.16",
   "updatedAt": "2024-11-29T23:59:03.130Z",
+=======
+      "address": "0xDcce0ea9293235A9f12227f07C870eb39A08b3Fa",
+      "transactionHash": "0x8cc18e488a9e2965d838c5c3b573070859099b30a2139ce71e0329e25b51374d"
+    }
+  },
+  "schemaVersion": "3.4.16",
+  "updatedAt": "2024-11-30T18:30:22.800Z",
+>>>>>>> a3f765335766a01627d14b387ebc3eff98292240
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",
