@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "@metamask/detect-provider": "^2.0.0",
-    "web3": "^4.14.0"
-  }
-}
