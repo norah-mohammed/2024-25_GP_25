@@ -1,0 +1,463 @@
+/* Body background with a light gradient effect */
+
+
+/* For container */
+.container {
+  margin-left: 240px;
+  transition: margin-left 0.3s ease;
+}
+
+.sidebar-closed .container {
+  margin-left: 60px;
+}
+
+/* Manufacturer Info Styling */
+.manufacturer-info {
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+}
+/* Popup Overlay *//* Dim background when popup is open */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* Enhanced rejection popup style */
+.rejection-popup {
+  background: #fff;
+  border-radius: 12px;
+  padding: 30px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  font-family: 'Poppins', sans-serif;
+  animation: slideDown 0.3s ease-out;
+}
+.rejection-icon-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.rejection-icon {
+  font-size: 42px;
+}
+
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.rejection-popup h3 {
+  font-size: 20px;
+  color: #2e7d32;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.rejection-popup textarea {
+  width: 100%;
+  height: 100px;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  resize: none;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.rejection-popup .error {
+  margin-top: 5px;
+  font-size: 13px;
+  color: #d32f2f;
+}
+
+.popup-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.popup-buttons button {
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: none;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.popup-buttons .confirm {
+  background-color: #43C17A;
+  color: white;
+}
+
+.popup-buttons .cancel {
+  background-color: #eee;
+  color: #333;
+}
+
+.popup-buttons button:hover {
+  opacity: 0.9;
+}
+
+
+.manufacturer-info h2 {
+  font-size: 24px;
+  color: #388e3c;
+  margin-bottom: 15px;
+}
+
+.manufacturer-info p {
+  margin: 8px 0;
+  font-size: 16px;
+  color: #555;
+}
+
+.manufacturer-info strong {
+  font-weight: bold;
+}
+
+/* Orders Section Grid */
+.order-gridM {
+  display: flex;
+  flex-wrap: wrap; /* Allow wrapping of items */
+  gap: 20px; /* Spacing between cards */
+  justify-content: flex-start; /* Align items to the left */
+  margin-top: 20px; /* Add some spacing from the heading */
+}
+.orders-sectionM h2{
+  color: #000000;
+}
+
+/* Individual Order Card */
+.order-cardM {
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for card */
+  flex: 1 1 calc(33.333% - 20px); /* Three cards per row with gaps */
+  max-width: calc(33.333% - 20px); /* Ensure proper width for three cards */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box; /* Include padding and border in width calculation */
+}
+.no-orders-message {
+  font-size: 16px;
+  color: #555; /* Subtle gray text */
+  margin-top: 20px;
+  font-weight: bold;
+  display: flex; /* Allows alignment with the icon */
+  align-items: left;
+  justify-content: left;
+}
+
+.no-orders-message svg {
+  margin-left: 10px;
+  color: #919191; /* Green for success */
+  font-size: 18px; /* Slightly larger than the text */
+}
+
+
+
+
+/* Adjust card width for smaller screens */
+@media (max-width: 768px) {
+  .order-cardM {
+    flex: 1 1 calc(50% - 20px); /* Two cards per row */
+    max-width: calc(50% - 20px);
+  }
+}
+
+@media (max-width: 480px) {
+  .order-cardM {
+    flex: 1 1 100%; /* One card per row */
+    max-width: 100%;
+  }
+}
+
+/* Order Actions Styling */
+.order-actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Accept and Reject Buttons */
+.order-actions button {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  flex: 1;
+  margin: 0 5px; /* Space between buttons */
+}
+
+.order-actions button:first-of-type {
+  background-color: #43C17A; /* Green for accept */
+  color: white;
+}
+
+.order-actions button:last-of-type {
+  background-color: #f8f9fa; /* Light gray for reject */
+  color: #43C17A;
+  border: 1px solid #43C17A;
+}
+
+.order-actions button:hover {
+  opacity: 0.9; /* Subtle hover effect */
+}
+
+
+.order-cardM p {
+  margin: 5px 0;
+  font-size: 14px;
+  color: #555;
+}
+
+.order-cardM .status {
+  margin-top: 10px;
+  font-weight: bold;
+}
+.order-cardM .actions {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.order-cardM button {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  flex: 1;
+  margin: 0 5px;
+}
+
+.order-cardM button:first-of-type {
+  background-color: #43C17A;
+  color: white;
+}
+
+.order-cardM button:last-of-type {
+  background-color: rgb(243, 240, 240);
+  color: #43C17A;
+  border: #43C17A 1px solid;
+}
+
+.order-cardM button:hover {
+  opacity: 0.9;
+}
+
+.btn-accept{
+  background-color: #43C17A;
+  color: white;
+}
+
+/* Notification Styling */
+.notification {
+  background-color: #d4edda;
+  color: #155724;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+}
+h2{
+  color: #388e3c;
+}
+/* Adjust card width for smaller screens */
+@media (max-width: 768px) {
+  .container {
+    margin-left: 0; /* Remove left margin for small screens */
+  }
+
+  .order-cardM {
+    flex: 1 1 calc(50% - 20px); /* Two cards per row */
+    max-width: calc(50% - 20px);
+  }
+}
+
+@media (max-width: 480px) {
+  .order-cardM {
+    margin-left: 0; /* Remove left margin for small screens */
+    flex: 1 1 100%; /* One card per row */
+    max-width: 100%;
+  }
+}
+/* Notification Bell Container */
+.notification-bell-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 2000;
+}
+
+/* Bell Icon */
+.notification-bell {
+  position: relative;
+  cursor: pointer;
+}
+
+/* Red Dot for Notifications */
+.red-dot {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  width: 10px;
+  height: 10px;
+  background-color: red;
+  border-radius: 50%;
+}
+
+/* Popup Style */
+.notification-popup {
+  position: absolute;
+  top: 40px;
+  right: 0;
+  width: 300px;
+  background: #fff;
+  border: 1px solid #ddd;
+  padding: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  max-height: 400px;
+  overflow-y: auto;
+  z-index: 3000;
+}
+
+/* Each Notification Item */
+.notification-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f9f9f9;
+  padding: 8px;
+  margin-bottom: 5px;
+  border-radius: 5px;
+}
+
+/* Notification Text */
+.notification-item p {
+  margin: 0;
+  font-size: 14px;
+}
+
+/* Delete (X) Button */
+.delete-notification {
+  background: transparent;
+  border: none;
+  color: red;
+  font-size: 16px;
+  cursor: pointer;
+}.rejection-popup {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 40px 30px;
+  width: 100%;
+  max-width: 480px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  font-family: 'Poppins', sans-serif;
+  text-align: center;
+}
+
+.rejection-icon-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.rejection-icon {
+  font-size: 64px;
+}
+
+.rejection-popup h3 {
+  font-size: 24px;
+  color: #2c2c2c;
+  margin: 0 0 16px;
+  line-height: 1.4;
+  font-weight: 600;
+  text-align: center;
+}
+
+.rejection-popup textarea {
+  width: 100%;
+  height: 100px;
+  padding: 14px 16px;
+  font-size: 14px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  resize: none;
+  outline: none;
+  transition: border-color 0.2s ease;
+  margin-bottom: 10px;
+}
+
+.rejection-popup textarea:focus {
+  border-color: #4caf50;
+}
+
+.rejection-popup .error {
+  font-size: 13px;
+  color: #d32f2f;
+  margin-top: 4px;
+}
+
+.popup-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.popup-buttons button {
+  flex: 1;
+  padding: 12px 0;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.popup-buttons .confirm {
+  background-color: #43c17a;
+  color: white;
+}
+
+.popup-buttons .cancel {
+  background-color: #f2f2f2;
+  color: #555;
+}
+
+.popup-buttons button:hover {
+  opacity: 0.95;
+}
+
+

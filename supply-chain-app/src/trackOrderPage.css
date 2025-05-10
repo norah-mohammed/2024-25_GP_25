@@ -1,0 +1,267 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap");
+
+.trackOrderPage {
+  margin-left: 240px;
+  transition: margin-left 0.3s ease;
+  padding: 20px;
+  font-family: 'Poppins', sans-serif;
+  min-height: 100vh;
+  background-color: #ffffff;
+  
+}
+
+.sidebar-closed .trackOrderPage {
+  margin-left: 60px;
+}
+
+.trackOrderPage .container {
+  max-width: 1100px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  padding: 30px;
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2e7d32;
+  margin-bottom: 10px;
+}
+
+.order-id,
+.status {
+  font-size: 1rem;
+  margin-bottom: 8px;
+  color: #444;
+}
+
+.status {
+  font-weight: 600;
+  color: #1976d2;
+}
+
+.back-button {
+  background-color: #19d276;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin-top: 20px;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.back-button:hover {
+  background-color: #dfe7ef;
+}
+
+.trackOrderPage .rb-container ul.rb li {
+  margin-left: 4em;
+  padding: 0 0 40px 25px;
+  border-left: 2px dashed #4caf50;
+}
+
+.trackOrderPage .rb-container ul.rb li::before {
+  background: #4caf50;
+}
+
+.trackOrderPage ul.rb li .item-title {
+  font-size: 16px;
+}
+
+.trackOrderPage ul.rb li .timestamp {
+  font-size: 13px;
+  color: #388e3c;
+}
+
+.trackOrderPage .rb-container ul.rb li.rejected .item-title {
+  color: #d32f2f;
+}
+
+.trackOrderPage .rb-container ul.rb li.rejected.rb-item::before {
+  background: #d32f2f;
+}
+
+
+
+.trackOrderPage.sidebar-open {
+  margin-left: 250px; /* Adjust this value according to the sidebar width */
+}
+.container h1{
+  color: #333;
+}
+
+.trackOrderPage .container {
+  width: calc(100% - 250px); /* Consider sidebar width */
+  max-width: 1200px;
+  margin: 1% auto;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  transition: width 0.3s ease; /* Smooth transition for content width */
+}
+
+.trackOrderPage.sidebar-open .container {
+  width: calc(100% - 250px); /* Adjust content width when sidebar is open */
+}
+
+
+.trackOrderPage .rightbox {
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.trackOrderPage .rb-container {
+  font-family: 'Roboto', sans-serif;
+  width: 100%;
+  margin: auto;
+}
+
+.trackOrderPage .rb-container ul.rb {
+  margin: 2.5em 0;
+  padding: 0;
+  display: inline-block;
+  list-style: none;
+}
+
+.trackOrderPage .rb-container ul.rb li {
+  position: relative;
+  margin-left: 10em;
+  min-height: 50px;
+  border-left: 2px dashed #50d890;
+  padding: 0 0 50px 30px;
+}
+
+.trackOrderPage .rb-container ul.rb li:last-child {
+  border-left: 0;
+}
+
+.trackOrderPage .rb-container ul.rb li::before {
+  position: absolute;
+  left: -18px;
+  top: -5px;
+  content: " ";
+  border: 8px solid rgba(255, 255, 255, 1);
+  border-radius: 50%;
+  background: #50d890;
+  height: 20px;
+  width: 20px;
+  transition: all 500ms ease-in-out;
+}
+
+.trackOrderPage .rb-container ul.rb li:hover::before {
+  border-color: #00796b;
+  transition: all 1000ms ease-in-out;
+}
+
+.trackOrderPage ul.rb li .timestamp {
+  color: #00796b;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.trackOrderPage ul.rb li .item-title {
+  font-size: 18px;
+  color: #333;
+  font-weight: 600;
+}
+
+.trackOrderPage ul.rb li .location {
+  font-size: 14px;
+  color: #50d890;
+  margin-top: 5px;
+  border-left: 3px solid #50d890;
+  padding-left: 5px;
+}
+
+
+
+
+.trackOrderPage .rb-container ul.rb li.rejected .item-title,
+.trackOrderPage .rb-container ul.rb li.canceled .item-title {
+  color: #ff4d4d; /* Red text for rejected/canceled orders */
+  font-weight: bold;
+}
+
+.trackOrderPage .rb-container ul.rb li.rejected:last-child,
+.trackOrderPage .rb-container ul.rb li.canceled:last-child {
+  border-left: none; /* Remove the line for the last rejected/canceled order */
+  padding-bottom: 0; /* Remove extra spacing */
+}
+.trackOrderPage .rb-container ul.rb li.rejected.rb-item::before {
+  background: #ff4d4d !important;
+}
+
+.trackOrderPage .rb-container ul.rb li.rejected.rb-item:hover::before {
+  background: #ff0000 !important;
+}
+.status-box {
+  width: 90%;
+  padding: 14px 24px;
+  margin-bottom: 24px;
+  border-radius: 8px;
+  font-family: 'Poppins', sans-serif;
+  display: center;
+  align-items: flex-start;
+  justify-content: space-between;
+  font-weight: 600;
+  font-size: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  margin-left: 10px;
+  align-content: center;
+}
+
+.status-box.green {
+  background-color: #e8f5e9;
+  border-left: 6px solid #4caf50;
+  color: #2e7d32;
+}
+
+.status-box.yellow {
+  background-color: #fff8e1;
+  border-left: 6px solid #ffb300;
+  color: #ff6f00;
+}
+
+.status-box.red {
+  background-color: #ffebee;
+  border-left: 6px solid #e53935;
+  color: #b71c1c;
+}
+
+.status-label {
+  font-weight: 500;
+  margin-right: 10px;
+}
+
+.status-value {
+  text-transform: capitalize;
+}
+
+
+@media (max-width: 768px) {
+  .trackOrderPage .container {
+    width: 95%;
+    padding: 15px;
+  }
+  .trackOrderPage .rb-container ul.rb li {
+    padding: 15px;
+  }
+  .trackOrderPage .item-title {
+    font-size: 16px;
+  }
+  .trackOrderPage .timestamp {
+    font-size: 12px;
+  }
+}
+.track-order-container {
+  transition: margin-left 0.3s ease;
+  margin-left: 260px; /* Default when sidebar is open */
+}
+
+.sidebar-closed .track-order-container {
+  margin-left: 60px; /* When sidebar is collapsed */
+}
