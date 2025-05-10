@@ -1,70 +1,123 @@
-# Getting Started with Create React App
+## 2024-25_GP_25: Farm To Fork
+### Blockchain-Based Supply Chain System 
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Farm to Fork platform is a blockchain-based food supply chain management system designed to enhance transparency, traceability, and quality assurance in the food supply chain. It facilitates seamless interactions between manufacturers, distributors, and retailers, ensuring that food products are handled and transported under optimal conditions. The system focuses on providing comprehensive information about products, managing order processes, and monitoring the quality of products through temperature tracking. Each step of the supply chain is documented and accessible, ensuring food safety, reducing wastage, and offering a secure and efficient solution for stakeholders.
 
-## Available Scripts
+### Technology Used
 
-In the project directory, you can run:
+- **Blockchain Technology (Ethereum)**: Ensures the immutability and security of transaction records across the supply chain. Each transaction, from manufacturer to retailer, is recorded on the blockchain, offering full traceability of products.
 
-### `npm start`
+- **Smart Contracts**: Facilitates automated processes such as order acceptance, shipment status updates, and temperature validation. These contracts ensure that predefined conditions, like temperature limits, are met before proceeding with transactions.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- **Truffle and Ganache**: Used for developing, testing, and deploying smart contracts on the blockchain.
+  
+### Setting up Local Development
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+#### Step 1: Installation and Setup
 
-### `npm test`
+1. **VSCode**: Download from [VSCode website](https://code.visualstudio.com/).
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+2. **Node.js**: Download the latest version from [Node.js website](https://nodejs.org/). After installation, verify the version by running the following command in the terminal:
+    ```bash
+    node -v
+    ```
 
-### `npm run build`
+3. **Git**: Download from [Git website](https://git-scm.com/downloads). Verify the version by running the following command:
+    ```bash
+    git --version
+    ```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+4. **Ganache**: Download from [Ganache official website](https://www.trufflesuite.com/ganache).
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+5. **MetaMask**: Install MetaMask as a browser extension from the [Chrome Web Store](https://chrome.google.com/webstore/category/extensions) or [Firefox Add-ons store](https://addons.mozilla.org/).
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+---
 
-### `npm run eject`
+#### Step 2: Create, Compile & Deploy Smart Contract
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+1. **Open VSCode**: Launch VSCode and open the terminal using `Ctrl + '`.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+2. **Clone the Project**:
+    ```bash
+    git clone https://github.com/norah-mohammed/2024-25_GP_25.git
+    ```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+3. **Install Truffle**:
+    ```bash
+    npm install -g truffle
+    ```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+4. **Install Project Dependencies**:
+    ```bash
+    npm i
+    ```
 
-## Learn More
+##### Project Structure Overview:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- **contracts**: Contains Solidity smart contracts. The `Migrations.sol` contract is used for managing migrations.
+- **migrations**: JavaScript files to deploy the smart contracts to the blockchain.
+- **test**: JavaScript test files for smart contract testing.
+- **truffle-config.js**: Configuration file for the Truffle project, including blockchain network settings.
+- **package.json**: Contains project dependencies and scripts.
+- **package-lock.json**: Automatically generated file listing exact dependency versions.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+5. **Compile the Smart Contract**:
+    ```bash
+    truffle compile
+    ```
 
-### Code Splitting
+6. **Deploy the Smart Contract**:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+   - Open Ganache and create a new workspace.
+   - Copy the RPC server address.
+   - Update the `truffle-config.js` file with the Ganache RPC address.
+   - Run the following command in the terminal to deploy the contract:
+     ```bash
+     truffle migrate
+     ```
 
-### Analyzing the Bundle Size
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+#### Step 3: Run DApp
 
-### Making a Progressive Web App
+1. **Navigate to the supply-chain-app Folder**:
+    ```bash
+    cd supply-chain-app
+    ```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+2. **Install All Dependencies**:
+    ```bash
+    npm i
+    ```
 
-### Advanced Configuration
+3. **Install Web3**:
+    ```bash
+    npm install --save web3
+    ```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+4. **Run the DApp**:
+    ```bash
+    npm start
+    ```
+    The DApp will be hosted at `http://localhost:3000`.
 
-### Deployment
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+#### Step 4: Connect MetaMask with Ganache
 
-### `npm run build` fails to minify
+1. **Start Ganache**: Open the Ganache application and note the RPC server URL and port number.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+2. **Connect MetaMask**:
+   - Open MetaMask in your browser and click on the network dropdown in the top-right corner.
+   - Select "Custom RPC" and enter the Ganache RPC URL and port number.
+   - Click "Save".
+
+3. **Import Account**:
+   - In Ganache, go to the "Accounts" tab, copy the private key of the first account.
+   - In MetaMask, click on the three dots in the top-right corner, select "Import Account," and paste the private key.
+
+
+
+
+
+---
